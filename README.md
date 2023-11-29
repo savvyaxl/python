@@ -1,4 +1,4 @@
-This script will send memeory data from a Linux box to Homeassistant using MQTT
+This script will send memory data from a Linux box to Homeassistant using MQTT
 
 You will need to install Paho using pip3
 
