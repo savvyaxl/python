@@ -64,7 +64,7 @@ def getMem ():
     hi_ = patt.findall(data2.stdout.splitlines()[1].decode('utf-8'))[6]
     si_ = patt.findall(data2.stdout.splitlines()[1].decode('utf-8'))[7]
     st_ = patt.findall(data2.stdout.splitlines()[1].decode('utf-8'))[8]
-    return ''.join(["{\"total\":",total_,",\"used\":",used_,",\"free\":",free_,\"us\":",us_,",\"sy\":",sy_,",\"ni\":",ni_,\"id\":",id_,",\"wa\":",wa_,",\"hi\":",hi_,\"si\":",si_,",\"st\":",st_,"}"])
+    return ''.join(["{\"total\":",total_,",\"used\":",used_,",\"free\":",free_,",\"us\":",us_,",\"sy\":",sy_,",\"ni\":",ni_,",\"id\":",id_,",\"wa\":",wa_,",\"hi\":",hi_,",\"si\":",si_,",\"st\":",st_,"}"])
 
 def publish(client):
     #msg_count = 0
