@@ -47,13 +47,24 @@ def connect_mqtt():
 
 def getMem ():
     cmd = 'free'
+    cmd2 = 'top -n1 | grep '%Cpu' | sed 's/^%Cpu(s)://''
     data = Run(cmd, capture_output=True, shell=True)
+    data2 = Run(cmd2, capture_output=True, shell=True)
     #return data.stdout.splitlines()[1].decode('utf-8').split("\t")[1]
     patt = re.compile("[^\s]+")
+    patt2 = re.compile(",")
     total_ = patt.findall(data.stdout.splitlines()[1].decode('utf-8'))[1]
     used_ = patt.findall(data.stdout.splitlines()[1].decode('utf-8'))[2]
     free_ = patt.findall(data.stdout.splitlines()[1].decode('utf-8'))[3]
-    return ''.join(["{\"total\":",total_,",\"used\":",used_,",\"free\":",free_,"}"])
+    us_ = patt.findall(data2.stdout.splitlines()[1].decode('utf-8'))[1]
+    sy_ = patt.findall(data2.stdout.splitlines()[1].decode('utf-8'))[2]
+    ni_ = patt.findall(data2.stdout.splitlines()[1].decode('utf-8'))[3]
+    id_ = patt.findall(data2.stdout.splitlines()[1].decode('utf-8'))[4]
+    wa_ = patt.findall(data2.stdout.splitlines()[1].decode('utf-8'))[5]
+    hi_ = patt.findall(data2.stdout.splitlines()[1].decode('utf-8'))[6]
+    si_ = patt.findall(data2.stdout.splitlines()[1].decode('utf-8'))[7]
+    st_ = patt.findall(data2.stdout.splitlines()[1].decode('utf-8'))[8]
+    return ''.join(["{\"total\":",total_,",\"used\":",used_,",\"free\":",free_,\"us\":",us_,",\"sy\":",sy_,",\"ni\":",ni_,\"id\":",id_,",\"wa\":",wa_,",\"hi\":",hi_,\"si\":",si_,",\"st\":",st_,"}"])
 
 def publish(client):
     #msg_count = 0
