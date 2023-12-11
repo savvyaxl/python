@@ -135,9 +135,10 @@ def publish(client):
     result = client.publish(topic_config_st, config_st)
     
     while True:
-        time.sleep(60)
         msg = getMem ()
         result = client.publish(topic_state, msg)
+        time.sleep(60)
+        
         # result: [0, 1]
         #status = result[0]
         #if status == 0:
