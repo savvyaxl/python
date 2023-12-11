@@ -100,17 +100,17 @@ def getMem ():
 
     tmp_string = data2.stdout.splitlines()[0].decode('utf-8')
     
-    us_ = tmp_string[0,5]
+    us_ = tmp_string[0:5]
     print(f"Send `{us_}`")
-    sy_ = tmp_string[10,5]
-    ni_ = tmp_string[19,5]
-    id_ = tmp_string[28,5]
+    sy_ = tmp_string[10:5]
+    ni_ = tmp_string[19:5]
+    id_ = tmp_string[28:5]
     print(f"Send `{id_}`")
-    wa_ = tmp_string[37,5]
+    wa_ = tmp_string[37:5]
     
-    hi_ = tmp_string[46,5]
-    si_ = tmp_string[55,5]
-    st_ = tmp_string[64,5]
+    hi_ = tmp_string[46:5]
+    si_ = tmp_string[55:5]
+    st_ = tmp_string[64:5]
     return ''.join(["{\"total\":",total_,",\"used\":",used_,",\"free\":",free_,",\"us\":",us_,",\"sy\":",sy_,",\"ni\":",ni_,",\"id\":",id_,",\"wa\":",wa_,",\"hi\":",hi_,",\"si\":",si_,",\"st\":",st_,"}"])
 
 def publish(client):
