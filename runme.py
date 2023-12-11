@@ -97,14 +97,15 @@ def getMem ():
     total_ = patt.findall(data.stdout.splitlines()[1].decode('utf-8'))[1]
     used_ = patt.findall(data.stdout.splitlines()[1].decode('utf-8'))[2]
     free_ = patt.findall(data.stdout.splitlines()[1].decode('utf-8'))[3]
-    us_ = patt.findall(data2.stdout.splitlines()[0].decode('utf-8'))[1]
-    sy_ = patt.findall(data2.stdout.splitlines()[0].decode('utf-8'))[2]
-    ni_ = patt.findall(data2.stdout.splitlines()[0].decode('utf-8'))[3]
-    id_ = patt.findall(data2.stdout.splitlines()[0].decode('utf-8'))[4]
-    wa_ = patt.findall(data2.stdout.splitlines()[0].decode('utf-8'))[5]
-    hi_ = patt.findall(data2.stdout.splitlines()[0].decode('utf-8'))[6]
-    si_ = patt.findall(data2.stdout.splitlines()[0].decode('utf-8'))[7]
-    st_ = patt.findall(data2.stdout.splitlines()[0].decode('utf-8'))[8]
+    
+    us_ = patt2.findall(data2.stdout.splitlines()[0].decode('utf-8'))[0]
+    sy_ = patt2.findall(data2.stdout.splitlines()[0].decode('utf-8'))[1]
+    ni_ = patt2.findall(data2.stdout.splitlines()[0].decode('utf-8'))[2]
+    id_ = patt2.findall(data2.stdout.splitlines()[0].decode('utf-8'))[3]
+    wa_ = patt2.findall(data2.stdout.splitlines()[0].decode('utf-8'))[4]
+    hi_ = patt2.findall(data2.stdout.splitlines()[0].decode('utf-8'))[5]
+    si_ = patt2.findall(data2.stdout.splitlines()[0].decode('utf-8'))[6]
+    st_ = patt2.findall(data2.stdout.splitlines()[0].decode('utf-8'))[7]
     return ''.join(["{\"total\":",total_,",\"used\":",used_,",\"free\":",free_,",\"us\":",us_,",\"sy\":",sy_,",\"ni\":",ni_,",\"id\":",id_,",\"wa\":",wa_,",\"hi\":",hi_,",\"si\":",si_,",\"st\":",st_,"}"])
 
 def publish(client):
