@@ -102,15 +102,15 @@ def getMem ():
     
     us_ = tmp_string[0:5]
     print(f"Send `{us_}`")
-    sy_ = tmp_string[10:5]
-    ni_ = tmp_string[19:5]
-    id_ = tmp_string[28:5]
+    sy_ = tmp_string[10:15]
+    ni_ = tmp_string[19:24]
+    id_ = tmp_string[28:33]
     print(f"Send `{id_}`")
-    wa_ = tmp_string[37:5]
+    wa_ = tmp_string[37:42]
     
-    hi_ = tmp_string[46:5]
-    si_ = tmp_string[55:5]
-    st_ = tmp_string[64:5]
+    hi_ = tmp_string[46:51]
+    si_ = tmp_string[55:60]
+    st_ = tmp_string[64:69]
     return ''.join(["{\"total\":",total_,",\"used\":",used_,",\"free\":",free_,",\"us\":",us_,",\"sy\":",sy_,",\"ni\":",ni_,",\"id\":",id_,",\"wa\":",wa_,",\"hi\":",hi_,",\"si\":",si_,",\"st\":",st_,"}"])
 
 def publish(client):
