@@ -100,9 +100,10 @@ def getMem ():
 
     tmp_string = data2.stdout.splitlines()[0].decode('utf-8')
     
-    us_ = tmp_string[0:4]
+    us_ = tmp_string[1:5]
     print(f"Send `{us_}`")
     sy_ = tmp_string[10:15]
+    print(f"Send `{sy_}`")
     ni_ = tmp_string[19:24]
     id_ = tmp_string[28:33]
     print(f"Send `{id_}`")
