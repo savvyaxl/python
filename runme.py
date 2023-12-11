@@ -90,27 +90,27 @@ def getMem ():
     cmd2 = 'top -bn1 | grep \'%Cpu\' | sed \'s/^%Cpu(s)://\' | sed \'s/^/ /\''
     data = Run(cmd, capture_output=True, shell=True)
     data2 = Run(cmd2, capture_output=True, shell=True)
-    print(f"Send `{data2}`")
+    #print(f"Send `{data2}`")
     #return data.stdout.splitlines()[1].decode('utf-8').split("\t")[1]
     patt = re.compile("[^\s]+")
     patt2 = re.compile("[^\s]+")
     total_ = patt.findall(data.stdout.splitlines()[1].decode('utf-8'))[1]
     used_ = patt.findall(data.stdout.splitlines()[1].decode('utf-8'))[2]
     free_ = patt.findall(data.stdout.splitlines()[1].decode('utf-8'))[3]
+
+    tmp_string = data2.stdout.splitlines()[0].decode('utf-8')
     
-    us_ = patt2.findall(data2.stdout.splitlines()[0].decode('utf-8'))[0]
+    us_ = tmp_string[0,5]
     print(f"Send `{us_}`")
-    sy_ = patt2.findall(data2.stdout.splitlines()[0].decode('utf-8'))[2]
-    print(f"Send `{sy_}`")
-    ni_ = patt2.findall(data2.stdout.splitlines()[0].decode('utf-8'))[4]
-    print(f"Send `{ni_}`")
-    id_ = patt2.findall(data2.stdout.splitlines()[0].decode('utf-8'))[6]
+    sy_ = tmp_string[10,5]
+    ni_ = tmp_string[19,5]
+    id_ = tmp_string[28,5]
     print(f"Send `{id_}`")
-    wa_ = patt2.findall(data2.stdout.splitlines()[0].decode('utf-8'))[8]
-    print(f"Send `{wa_}`")
-    hi_ = patt2.findall(data2.stdout.splitlines()[0].decode('utf-8'))[10]
-    si_ = patt2.findall(data2.stdout.splitlines()[0].decode('utf-8'))[12]
-    st_ = patt2.findall(data2.stdout.splitlines()[0].decode('utf-8'))[14]
+    wa_ = tmp_string[37,5]
+    
+    hi_ = tmp_string[46,5]
+    si_ = tmp_string[55,5]
+    st_ = tmp_string[64,5]
     return ''.join(["{\"total\":",total_,",\"used\":",used_,",\"free\":",free_,",\"us\":",us_,",\"sy\":",sy_,",\"ni\":",ni_,",\"id\":",id_,",\"wa\":",wa_,",\"hi\":",hi_,",\"si\":",si_,",\"st\":",st_,"}"])
 
 def publish(client):
