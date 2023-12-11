@@ -101,9 +101,13 @@ def getMem ():
     us_ = patt2.findall(data2.stdout.splitlines()[0].decode('utf-8'))[0]
     print(f"Send `{us_}`")
     sy_ = patt2.findall(data2.stdout.splitlines()[0].decode('utf-8'))[1]
+    print(f"Send `{sy_}`")
     ni_ = patt2.findall(data2.stdout.splitlines()[0].decode('utf-8'))[2]
+    print(f"Send `{ni_}`")
     id_ = patt2.findall(data2.stdout.splitlines()[0].decode('utf-8'))[3]
+    print(f"Send `{id_}`")
     wa_ = patt2.findall(data2.stdout.splitlines()[0].decode('utf-8'))[4]
+    print(f"Send `{wa_}`")
     hi_ = patt2.findall(data2.stdout.splitlines()[0].decode('utf-8'))[5]
     si_ = patt2.findall(data2.stdout.splitlines()[0].decode('utf-8'))[6]
     st_ = patt2.findall(data2.stdout.splitlines()[0].decode('utf-8'))[7]
