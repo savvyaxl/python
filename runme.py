@@ -93,7 +93,7 @@ def getMem ():
     print(f"Send `{data2}`")
     #return data.stdout.splitlines()[1].decode('utf-8').split("\t")[1]
     patt = re.compile("[^\s]+")
-    patt2 = re.compile("[,]")
+    patt2 = re.compile("[^\s]+")
     total_ = patt.findall(data.stdout.splitlines()[1].decode('utf-8'))[1]
     used_ = patt.findall(data.stdout.splitlines()[1].decode('utf-8'))[2]
     free_ = patt.findall(data.stdout.splitlines()[1].decode('utf-8'))[3]
