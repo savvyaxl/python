@@ -16,15 +16,19 @@ topic_state = ''.join(["homeassistant/sensor/",sysName,"/state"])
 name_total = "Memory Total " + sysName
 name_used = "Memory Used " + sysName
 name_free = "Memory Free " + sysName
+name_us = "CPU US " + sysName
 name_total_topic = name_total.lower().replace(" ", "_")
 name_used_topic = name_used.lower().replace(" ", "_")
 name_free_topic = name_free.lower().replace(" ", "_")
+name_us_topic = name_us.lower().replace(" ", "_")
 topic_config_total = ''.join(['homeassistant/sensor/',sysName,'/',name_total_topic,'/config'])
 topic_config_used = ''.join(['homeassistant/sensor/',sysName,'/',name_used_topic,'/config'])
 topic_config_free = ''.join(['homeassistant/sensor/',sysName,'/',name_free_topic,'/config'])
+topic_config_us = ''.join(['homeassistant/sensor/',sysName,'/',name_us_topic,'/config'])
 config_total = ''.join(["{\"name\":\"",name_total,"\",\"state_topic\": \"",topic_state,"\",\"unit_of_measurement\":\"GB\",\"value_template\":\"{{value_json.total}}\"}"])
 config_used = ''.join(["{\"name\":\"",name_used,"\",\"state_topic\": \"",topic_state,"\",\"unit_of_measurement\":\"%\",\"value_template\":\"{{(100*value_json.used/value_json.total)|round|int}}\"}"])
 config_free = ''.join(["{\"name\":\"",name_free,"\",\"state_topic\": \"",topic_state,"\",\"unit_of_measurement\":\"%\",\"value_template\":\"{{(100*value_json.free/value_json.total)|round|int}}\"}"])
+config_us = ''.join(["{\"name\":\"",name_us,"\",\"state_topic\": \"",topic_state,"\",\"unit_of_measurement\":\"%\",\"value_template\":\"{{(value_json.us}}\"}"])
 #{"device_class": "illuminance", "name": "Green",               "state_topic": "homeassistant/sensor/tcs_8caab51b443e/state", "unit_of_measurement": "lx", "value_template": "{{ value_json.green8caab51b443e}}" }
 #{"device_class": "None",        "name": "Memory_Free_ansible", "state_topic": "homeassistant/sensor/ansible/state",          "unit_of_measurement": "%",  "value_template": "{{value_json.free}}"}
 # generate client ID with pub prefix randomly
