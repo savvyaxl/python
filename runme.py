@@ -87,7 +87,7 @@ def connect_mqtt():
 
 def getMem ():
     cmd = 'free'
-    cmd2 = 'top -n1 | grep \'%Cpu\' | sed \'s/^%Cpu(s)://\' | sed -r "s/\x1B\[([0-9]{1,3}(;[0-9]{1,2};?)?)?[mGK]//g"'
+    cmd2 = 'top -bn1 | grep \'%Cpu\' | sed \'s/^%Cpu(s)://\''
     data = Run(cmd, capture_output=True, shell=True)
     data2 = Run(cmd2, capture_output=True, shell=True)
     print(f"Send `{data2}`")
