@@ -18,13 +18,13 @@ name_used = "Memory Used " + sysName
 name_free = "Memory Free " + sysName
 
 name_us = "CPU US " + sysName
-name_sy = "CPU US " + sysName
-name_ni = "CPU US " + sysName
-name_id = "CPU US " + sysName
-name_wa = "CPU US " + sysName
-name_hi = "CPU US " + sysName
-name_si = "CPU US " + sysName
-name_st = "CPU US " + sysName
+name_sy = "CPU SY " + sysName
+name_ni = "CPU NI " + sysName
+name_id = "CPU ID " + sysName
+name_wa = "CPU WA " + sysName
+name_hi = "CPU HI " + sysName
+name_si = "CPU SI " + sysName
+name_st = "CPU ST " + sysName
 
 name_total_topic = name_total.lower().replace(" ", "_")
 name_used_topic = name_used.lower().replace(" ", "_")
