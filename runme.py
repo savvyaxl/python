@@ -54,6 +54,7 @@ def getMem ():
     cmd2 = 'top -n1 | grep \'%Cpu\' | sed \'s/^%Cpu(s)://\''
     data = Run(cmd, capture_output=True, shell=True)
     data2 = Run(cmd2, capture_output=True, shell=True)
+    print(f"Send `{data2}`")
     #return data.stdout.splitlines()[1].decode('utf-8').split("\t")[1]
     patt = re.compile("[^\s]+")
     patt2 = re.compile(",")
