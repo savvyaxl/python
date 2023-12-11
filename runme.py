@@ -110,7 +110,7 @@ def getMem ():
     print(f"Send `{wa_}`")
     hi_ = patt2.findall(data2.stdout.splitlines()[0].decode('utf-8'))[5]
     si_ = patt2.findall(data2.stdout.splitlines()[0].decode('utf-8'))[6]
-    st_ = patt2.findall(data2.stdout.splitlines()[0].decode('utf-8'))[7]
+    st_ = patt2.findall(data2.stdout.splitlines()[0].decode('utf-8'))[6]
     return ''.join(["{\"total\":",total_,",\"used\":",used_,",\"free\":",free_,",\"us\":",us_,",\"sy\":",sy_,",\"ni\":",ni_,",\"id\":",id_,",\"wa\":",wa_,",\"hi\":",hi_,",\"si\":",si_,",\"st\":",st_,"}"])
 
 def publish(client):
