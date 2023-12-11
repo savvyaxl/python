@@ -77,6 +77,10 @@ def publish(client):
     result = client.publish(topic_config_used, config_used)
     time.sleep(1)
     result = client.publish(topic_config_free, config_free)
+    
+    time.sleep(1)
+    result = client.publish(topic_config_us, config_us)
+    
     while True:
         time.sleep(60)
         msg = getMem ()
