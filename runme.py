@@ -119,7 +119,7 @@ def configure(client):
     time.sleep(1)
     result = client.publish(topic_config_free, config_free)
     time.sleep(1)
-     result = client.publish(topic_config_us, config_us)
+    result = client.publish(topic_config_us, config_us)
     time.sleep(1)
     result = client.publish(topic_config_sy, config_sy)
     time.sleep(1)
