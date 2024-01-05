@@ -14,6 +14,7 @@ sysName = socket.gethostname().split(".")[0]
 broker = '192.168.0.54'
 port = 1883
 topic_state = ''.join(["homeassistant/sensor/",sysName,"/state"])
+
 name_total = "Memory Total " + sysName
 name_used = "Memory Used " + sysName
 name_free = "Memory Free " + sysName
@@ -111,16 +112,14 @@ def getMem ():
     st_ = tmp_string[63:68]
     return ''.join(["{\"total\":",total_,",\"used\":",used_,",\"free\":",free_,",\"us\":",us_,",\"sy\":",sy_,",\"ni\":",ni_,",\"id\":",id_,",\"wa\":",wa_,",\"hi\":",hi_,",\"si\":",si_,",\"st\":",st_,"}"])
 
-def publish(client):
-    #msg_count = 0
+def configure(client):
     result = client.publish(topic_config_total, config_total)
     time.sleep(1)
     result = client.publish(topic_config_used, config_used)
     time.sleep(1)
     result = client.publish(topic_config_free, config_free)
-    
     time.sleep(1)
-    result = client.publish(topic_config_us, config_us)
+     result = client.publish(topic_config_us, config_us)
     time.sleep(1)
     result = client.publish(topic_config_sy, config_sy)
     time.sleep(1)
@@ -135,19 +134,20 @@ def publish(client):
     result = client.publish(topic_config_si, config_si)
     time.sleep(1)
     result = client.publish(topic_config_st, config_st)
+    time.sleep(1)
+ 
+def publish(client):
+    msg_count = 1
+    configure(client)
     
     while True:
         msg = getMem ()
         result = client.publish(topic_state, msg)
+        msg_count += 1
+        if msg_count > 60:
+            configure(client)
+            msg_count = 1
         time.sleep(60)
-        
-        # result: [0, 1]
-        #status = result[0]
-        #if status == 0:
-        #    print(f"Send `{msg}` to topic `{topic}`")
-        #else:
-        #    print(f"Failed to send message to topic {topic}")
-        #msg_count += 1
 
 
 def run():
