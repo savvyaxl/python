@@ -1,3 +1,4 @@
+#!/usr/bin/python
 # python 3.9
 
 import random

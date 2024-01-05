@@ -1,0 +1,15 @@
+[Unit]
+Description=Report to homeassistant
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/home/alex/python/runme.py
+ExecReload=/bin/kill -HUP $MAINPID
+KillMode=process
+Restart=on-failure
+RestartSec=42s
+
+[Install]
+WantedBy=default.target
