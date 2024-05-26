@@ -110,7 +110,22 @@ def getMem ():
     hi_ = tmp_string[45:50]
     si_ = tmp_string[54:59]
     st_ = tmp_string[63:68]
-    return ''.join(["{\"total\":",total_,",\"used\":",used_,",\"free\":",free_,",\"us\":",us_,",\"sy\":",sy_,",\"ni\":",ni_,",\"id\":",id_,",\"wa\":",wa_,",\"hi\":",hi_,",\"si\":",si_,",\"st\":",st_,"}"])
+    # return ''.join(["{\"total\":",total_,",\"used\":",used_,",\"free\":",free_,",\"us\":",us_,",\"sy\":",sy_,",\"ni\":",ni_,",\"id\":",id_,",\"wa\":",wa_,",\"hi\":",hi_,",\"si\":",si_,",\"st\":",st_,"}"])
+    srt = "{"
+    srt = srt + "\"total\":" + "\"" + total_  + "\""
+    srt = srt + ",\"used\":" + "\"" + used_  + "\""
+    srt = srt + ",\"free_\":" + "\"" + used_  + "\""
+    srt = srt + ",\"us_\":" + "\"" + used_  + "\""
+    srt = srt + ",\"sy_\":" + "\"" + used_  + "\""
+    srt = srt + ",\"ni_\":" + "\"" + used_  + "\""
+    srt = srt + ",\"id_\":" + "\"" + used_  + "\""
+    srt = srt + ",\"wa_\":" + "\"" + used_  + "\""
+    srt = srt + ",\"hi_\":" + "\"" + used_  + "\""
+    srt = srt + ",\"si_\":" + "\"" + used_  + "\""
+    srt = srt + ",\"st_\":" + "\"" + used_  + "\""
+    srt = srt + "}"
+    return srt
+
 
 def configure(client):
     result = client.publish(topic_config_total, config_total)
