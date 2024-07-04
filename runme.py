@@ -68,9 +68,9 @@ topic_config_id = ''.join(['homeassistant/sensor/',sysName,'/',name_id_topic,'/c
 # topic_config_st = ''.join(['homeassistant/sensor/',sysName,'/',name_st_topic,'/config'])
 
 
-config_total = ''.join(["{\"name\":\"",name_total,"\",\"state_topic\": \"",topic_state,"\",\"unit_of_measurement\":\"GB\",\"value_template\":\"{{value_json.total}}\"}"])
+config_total = ''.join(["{\"name\":\"",name_total,"\",\"state_topic\": \"",topic_state,"\",\"unit_of_measurement\":\"Kb\",\"value_template\":\"{{value_json.total}}\"}"])
 # config_used = ''.join(["{\"name\":\"",name_used,"\",\"state_topic\": \"",topic_state,"\",\"unit_of_measurement\":\"%\",\"value_template\":\"{{(100*value_json.used/value_json.total)|round|int}}\"}"])
-config_free = ''.join(["{\"name\":\"",name_free,"\",\"state_topic\": \"",topic_state,"\",\"unit_of_measurement\":\"%\",\"value_template\":\"{{(value_json.free|float*100/value_json.total)|round|int}}\"}"])
+config_free = ''.join(["{\"name\":\"",name_free,"\",\"state_topic\": \"",topic_state,"\",\"unit_of_measurement\":\"%\",\"value_template\":\"{{(value_json.free|float/value_json.total|float)|round|int}}\"}"])
 # config_us = ''.join(["{\"name\":\"",name_us,"\",\"state_topic\": \"",topic_state,"\",\"unit_of_measurement\":\"%\",\"value_template\":\"{{value_json.us}}\"}"])
 # config_sy = ''.join(["{\"name\":\"",name_sy,"\",\"state_topic\": \"",topic_state,"\",\"unit_of_measurement\":\"%\",\"value_template\":\"{{value_json.sy}}\"}"])
 # config_ni = ''.join(["{\"name\":\"",name_ni,"\",\"state_topic\": \"",topic_state,"\",\"unit_of_measurement\":\"%\",\"value_template\":\"{{value_json.ni}}\"}"])
