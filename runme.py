@@ -199,6 +199,7 @@ def publish(client):
 def run():
     client = connect_mqtt()
     client.loop_start()
+    configure(client)
     publish(client)
 
 
