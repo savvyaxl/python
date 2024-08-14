@@ -38,8 +38,8 @@ name_free = "Memory Free Percent " + sysName
 name_id = "CPU ID " + sysName
 # name_wa = "CPU WA " + sysName
 # name_hi = "CPU HI " + sysName
-# name_si = "CPU SI " + sysName
-# name_st = "CPU ST " + sysName
+ name_si = "CPU SI " + sysName
+ name_st = "CPU ST " + sysName
 
 
 name_total_topic = name_total.lower().replace(" ", "_")
@@ -51,8 +51,8 @@ name_free_topic = name_free.lower().replace(" ", "_")
 name_id_topic = name_id.lower().replace(" ", "_")
 # name_wa_topic = name_wa.lower().replace(" ", "_")
 # name_hi_topic = name_hi.lower().replace(" ", "_")
-# name_si_topic = name_si.lower().replace(" ", "_")
-# name_st_topic = name_st.lower().replace(" ", "_")
+ name_si_topic = name_si.lower().replace(" ", "_")
+ name_st_topic = name_st.lower().replace(" ", "_")
 
 
 topic_config_total = ''.join(['homeassistant/sensor/',sysName,'/',name_total_topic,'/config'])
@@ -64,8 +64,8 @@ topic_config_free = ''.join(['homeassistant/sensor/',sysName,'/',name_free_topic
 topic_config_id = ''.join(['homeassistant/sensor/',sysName,'/',name_id_topic,'/config'])
 # topic_config_wa = ''.join(['homeassistant/sensor/',sysName,'/',name_wa_topic,'/config'])
 # topic_config_hi = ''.join(['homeassistant/sensor/',sysName,'/',name_hi_topic,'/config'])
-# topic_config_si = ''.join(['homeassistant/sensor/',sysName,'/',name_si_topic,'/config'])
-# topic_config_st = ''.join(['homeassistant/sensor/',sysName,'/',name_st_topic,'/config'])
+ topic_config_si = ''.join(['homeassistant/sensor/',sysName,'/',name_si_topic,'/config'])
+ topic_config_st = ''.join(['homeassistant/sensor/',sysName,'/',name_st_topic,'/config'])
 
 
 config_total = ''.join(["{\"name\":\"",name_total,"\",\"state_topic\": \"",topic_state,"\",\"unit_of_measurement\":\"Kb\",\"value_template\":\"{{value_json.total}}\"}"])
@@ -77,8 +77,8 @@ config_free = ''.join(["{\"name\":\"",name_free,"\",\"state_topic\": \"",topic_s
 config_id = ''.join(["{\"name\":\"",name_id,"\",\"state_topic\": \"",topic_state,"\",\"unit_of_measurement\":\"%\",\"value_template\":\"{{value_json.id}}\"}"])
 # config_wa = ''.join(["{\"name\":\"",name_wa,"\",\"state_topic\": \"",topic_state,"\",\"unit_of_measurement\":\"%\",\"value_template\":\"{{value_json.wa}}\"}"])
 # config_hi = ''.join(["{\"name\":\"",name_hi,"\",\"state_topic\": \"",topic_state,"\",\"unit_of_measurement\":\"%\",\"value_template\":\"{{value_json.hi}}\"}"])
-# config_si = ''.join(["{\"name\":\"",name_si,"\",\"state_topic\": \"",topic_state,"\",\"unit_of_measurement\":\"%\",\"value_template\":\"{{value_json.si}}\"}"])
-# config_st = ''.join(["{\"name\":\"",name_st,"\",\"state_topic\": \"",topic_state,"\",\"unit_of_measurement\":\"%\",\"value_template\":\"{{value_json.st}}\"}"])
+ config_si = ''.join(["{\"name\":\"",name_si,"\",\"state_topic\": \"",topic_state,"\",\"unit_of_measurement\":\"%\",\"value_template\":\"{{value_json.si}}\"}"])
+ config_st = ''.join(["{\"name\":\"",name_st,"\",\"state_topic\": \"",topic_state,"\",\"unit_of_measurement\":\"%\",\"value_template\":\"{{value_json.st}}\"}"])
 
 #{"device_class": "illuminance", "name": "Green",               "state_topic": "homeassistant/sensor/tcs_8caab51b443e/state", "unit_of_measurement": "lx", "value_template": "{{ value_json.green8caab51b443e}}" }
 #{"device_class": "None",        "name": "Memory_Free_ansible", "state_topic": "homeassistant/sensor/ansible/state",          "unit_of_measurement": "%",  "value_template": "{{value_json.free}}"}
@@ -120,8 +120,8 @@ def getMem ():
     id_ = tmp_string[27:32]
     # wa_ = tmp_string[36:41]
     # hi_ = tmp_string[45:50]
-    # si_ = tmp_string[54:59]
-    # st_ = tmp_string[63:68]
+     si_ = tmp_string[54:59]
+     st_ = tmp_string[63:68]
     # return ''.join(["{\"total\":",total_,",\"used\":",used_,",\"free\":",free_,",\"us\":",us_,",\"sy\":",sy_,",\"ni\":",ni_,",\"id\":",id_,",\"wa\":",wa_,",\"hi\":",hi_,",\"si\":",si_,",\"st\":",st_,"}"])
     srt = "{"
 
@@ -134,8 +134,8 @@ def getMem ():
     # srt = srt + ",\"ni\":" + "\"" + ni_  + "\""
     # srt = srt + ",\"wa\":" + "\"" + wa_  + "\""
     # srt = srt + ",\"hi\":" + "\"" + hi_  + "\""
-    # srt = srt + ",\"si\":" + "\"" + si_  + "\""
-    # srt = srt + ",\"st\":" + "\"" + st_  + "\""
+     srt = srt + ",\"si\":" + "\"" + si_  + "\""
+     srt = srt + ",\"st\":" + "\"" + st_  + "\""
     srt = srt + "}"
     return srt
 
@@ -159,11 +159,11 @@ def configure(client):
     # result = client.publish(topic_config_wa, config_wa)
     # time.sleep(1)
     # result = client.publish(topic_config_hi, config_hi)
-    # time.sleep(1)
-    # result = client.publish(topic_config_si, config_si)
-    # time.sleep(1)
-    # result = client.publish(topic_config_st, config_st)
-    # time.sleep(1)
+     time.sleep(1)
+     result = client.publish(topic_config_si, config_si)
+     time.sleep(1)
+     result = client.publish(topic_config_st, config_st)
+     time.sleep(1)
  
 def publish(client):
     msg_count = 1
