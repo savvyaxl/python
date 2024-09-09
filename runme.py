@@ -56,35 +56,49 @@ config_st = ''.join(["{\"name\":\"",name_st,"\",\"state_topic\": \"",topic_state
 
 # name_used = "Memory Used " + sysName
 
-# name_us = "CPU US " + sysName
-# name_sy = "CPU SY " + sysName
-# name_ni = "CPU NI " + sysName
-# name_wa = "CPU WA " + sysName
-# name_hi = "CPU HI " + sysName
+if host:
+    # CPU WA
+    name_wa = "CPU WA " + sysName
+    name_wa_topic = name_wa.lower().replace(" ", "_")
+    topic_config_wa = ''.join(['homeassistant/sensor/',sysName,'/',name_wa_topic,'/config'])
+    config_wa = ''.join(["{\"name\":\"",name_wa,"\",\"state_topic\": \"",topic_state,"\",\"unit_of_measurement\":\"%\",\"value_template\":\"{{value_json.wa}}\"}"])
+
+
+    # CPU HI
+    name_hi = "CPU HI " + sysName
+    name_hi_topic = name_hi.lower().replace(" ", "_")
+    topic_config_hi = ''.join(['homeassistant/sensor/',sysName,'/',name_hi_topic,'/config'])
+    config_hi = ''.join(["{\"name\":\"",name_hi,"\",\"state_topic\": \"",topic_state,"\",\"unit_of_measurement\":\"%\",\"value_template\":\"{{value_json.hi}}\"}"])
+    
+    # name_us = "CPU US " + sysName
+    # name_sy = "CPU SY " + sysName
+    # name_ni = "CPU NI " + sysName
+
+
 
 
 # name_used_topic = name_used.lower().replace(" ", "_")
 # name_us_topic = name_us.lower().replace(" ", "_")
 # name_sy_topic = name_sy.lower().replace(" ", "_")
 # name_ni_topic = name_ni.lower().replace(" ", "_")
-# name_wa_topic = name_wa.lower().replace(" ", "_")
-# name_hi_topic = name_hi.lower().replace(" ", "_")
+
+
 
 
 # topic_config_used = ''.join(['homeassistant/sensor/',sysName,'/',name_used_topic,'/config'])
 # topic_config_us = ''.join(['homeassistant/sensor/',sysName,'/',name_us_topic,'/config'])
 # topic_config_sy = ''.join(['homeassistant/sensor/',sysName,'/',name_sy_topic,'/config'])
 # topic_config_ni = ''.join(['homeassistant/sensor/',sysName,'/',name_ni_topic,'/config'])
-# topic_config_wa = ''.join(['homeassistant/sensor/',sysName,'/',name_wa_topic,'/config'])
-# topic_config_hi = ''.join(['homeassistant/sensor/',sysName,'/',name_hi_topic,'/config'])
+
+
 
 
 # config_used = ''.join(["{\"name\":\"",name_used,"\",\"state_topic\": \"",topic_state,"\",\"unit_of_measurement\":\"%\",\"value_template\":\"{{(100*value_json.used/value_json.total)|round|int}}\"}"])
 # config_us = ''.join(["{\"name\":\"",name_us,"\",\"state_topic\": \"",topic_state,"\",\"unit_of_measurement\":\"%\",\"value_template\":\"{{value_json.us}}\"}"])
 # config_sy = ''.join(["{\"name\":\"",name_sy,"\",\"state_topic\": \"",topic_state,"\",\"unit_of_measurement\":\"%\",\"value_template\":\"{{value_json.sy}}\"}"])
 # config_ni = ''.join(["{\"name\":\"",name_ni,"\",\"state_topic\": \"",topic_state,"\",\"unit_of_measurement\":\"%\",\"value_template\":\"{{value_json.ni}}\"}"])
-# config_wa = ''.join(["{\"name\":\"",name_wa,"\",\"state_topic\": \"",topic_state,"\",\"unit_of_measurement\":\"%\",\"value_template\":\"{{value_json.wa}}\"}"])
-# config_hi = ''.join(["{\"name\":\"",name_hi,"\",\"state_topic\": \"",topic_state,"\",\"unit_of_measurement\":\"%\",\"value_template\":\"{{value_json.hi}}\"}"])
+
+
 
 #{"device_class": "illuminance", "name": "Green",               "state_topic": "homeassistant/sensor/tcs_8caab51b443e/state", "unit_of_measurement": "lx", "value_template": "{{ value_json.green8caab51b443e}}" }
 #{"device_class": "None",        "name": "Memory_Free_ansible", "state_topic": "homeassistant/sensor/ansible/state",          "unit_of_measurement": "%",  "value_template": "{{value_json.free}}"}
@@ -115,8 +129,6 @@ def getMem ():
     # us_ = tmp_string[0:5]
     # sy_ = tmp_string[9:14]
     # ni_ = tmp_string[18:23]
-    # wa_ = tmp_string[36:41]
-    # hi_ = tmp_string[45:50]
     # return ''.join(["{\"total\":",total_,",\"used\":",used_,",\"free\":",free_,",\"us\":",us_,",\"sy\":",sy_,",\"ni\":",ni_,",\"id\":",id_,",\"wa\":",wa_,",\"hi\":",hi_,",\"si\":",si_,",\"st\":",st_,"}"])
     
 #   %Cpu(s): 30.7 us,  2.9 sy,  0.0 ni, 48.5 id,  0.2 wa,  0.0 hi,  0.0 si, 17.7 st
@@ -134,15 +146,19 @@ def getMem ():
     id_ = tmp_string[27:32]
     si_ = tmp_string[54:59]
     st_ = tmp_string[63:68]
-
+    if host:
+        wa_ = tmp_string[36:41]
+        hi_ = tmp_string[45:50]
+    
     srt = "{"
 
     # srt = srt + ",\"used\":" + "\"" + used_  + "\""
     # srt = srt + ",\"us\":" + "\"" + us_  + "\""
     # srt = srt + ",\"sy\":" + "\"" + sy_  + "\""
     # srt = srt + ",\"ni\":" + "\"" + ni_  + "\""
-    # srt = srt + ",\"wa\":" + "\"" + wa_  + "\""
-    # srt = srt + ",\"hi\":" + "\"" + hi_  + "\""
+    if host:
+        srt = srt + ",\"wa\":" + "\"" + wa_  + "\""
+        srt = srt + ",\"hi\":" + "\"" + hi_  + "\""
     srt = srt + "\"id\":" + "\"" + id_  + "\""
     srt = srt + ",\"total\":" + "\"" + total_  + "\""
     srt = srt + ",\"free\":" + "\"" + free_  + "\""
@@ -177,10 +193,10 @@ def configure(client):
     # time.sleep(1)
     # result = client.publish(topic_config_ni, config_ni)
 
-    # time.sleep(1)
-    # result = client.publish(topic_config_wa, config_wa)
-    # time.sleep(1)
-    # result = client.publish(topic_config_hi, config_hi)
+    time.sleep(1)
+    result = client.publish(topic_config_wa, config_wa)
+    time.sleep(1)
+    result = client.publish(topic_config_hi, config_hi)
  
 def publish(client):
     msg_count = 1
