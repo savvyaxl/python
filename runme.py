@@ -159,14 +159,14 @@ def getMem ():
     # srt = srt + ",\"us\":" + "\"" + us_  + "\""
     # srt = srt + ",\"sy\":" + "\"" + sy_  + "\""
     # srt = srt + ",\"ni\":" + "\"" + ni_  + "\""
-    if is_host:
-        srt = srt + ",\"wa\":" + "\"" + wa_  + "\""
-        srt = srt + ",\"hi\":" + "\"" + hi_  + "\""
     srt = srt + "\"id\":" + "\"" + id_  + "\""
     srt = srt + ",\"total\":" + "\"" + total_  + "\""
     srt = srt + ",\"free\":" + "\"" + free_  + "\""
     srt = srt + ",\"si\":" + "\"" + si_  + "\""
     srt = srt + ",\"st\":" + "\"" + st_  + "\""
+    if is_host:
+        srt = srt + ",\"wa\":" + "\"" + wa_  + "\""
+        srt = srt + ",\"hi\":" + "\"" + hi_  + "\""
     srt = srt + "}"
     return srt
 
