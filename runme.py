@@ -18,10 +18,12 @@ with open('/home/alex/python/config.yaml', 'r') as file:
 # Access the YAML data
 print(data)
 
-broker = data['broker']
-port = data['port']
-username = data['username']
-password = data['password']
+my_agent='host'
+
+broker = data[my_agent]['broker']
+port = data[my_agent]['port']
+username = data[my_agent]['username']
+password = data[my_agent]['password']
 
 # generate client ID with pub prefix randomly
 client_id = f'python-mqtt-{random.randint(0, 1000)}'
