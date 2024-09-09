@@ -149,7 +149,7 @@ def getMem ():
     id_ = tmp_string[27:32]
     si_ = tmp_string[54:59]
     st_ = tmp_string[63:68]
-    if host:
+    if is_host:
         wa_ = tmp_string[36:41]
         hi_ = tmp_string[45:50]
     
