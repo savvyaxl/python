@@ -19,6 +19,7 @@ with open('/home/alex/python/config.yaml', 'r') as file:
 print(data)
 
 my_agent='host'
+is_host=1
 
 broker = data[my_agent]['broker']
 port = data[my_agent]['port']
@@ -58,7 +59,7 @@ config_st = ''.join(["{\"name\":\"",name_st,"\",\"state_topic\": \"",topic_state
 
 # name_used = "Memory Used " + sysName
 
-if host:
+if is_host:
     # CPU WA
     name_wa = "CPU WA " + sysName
     name_wa_topic = name_wa.lower().replace(" ", "_")
@@ -158,7 +159,7 @@ def getMem ():
     # srt = srt + ",\"us\":" + "\"" + us_  + "\""
     # srt = srt + ",\"sy\":" + "\"" + sy_  + "\""
     # srt = srt + ",\"ni\":" + "\"" + ni_  + "\""
-    if host:
+    if is_host:
         srt = srt + ",\"wa\":" + "\"" + wa_  + "\""
         srt = srt + ",\"hi\":" + "\"" + hi_  + "\""
     srt = srt + "\"id\":" + "\"" + id_  + "\""
@@ -195,10 +196,11 @@ def configure(client):
     # time.sleep(1)
     # result = client.publish(topic_config_ni, config_ni)
 
-    time.sleep(1)
-    result = client.publish(topic_config_wa, config_wa)
-    time.sleep(1)
-    result = client.publish(topic_config_hi, config_hi)
+    if is_host:
+        time.sleep(1)
+        result = client.publish(topic_config_wa, config_wa)
+        time.sleep(1)
+        result = client.publish(topic_config_hi, config_hi)
  
 def publish(client):
     msg_count = 1
