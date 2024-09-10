@@ -75,7 +75,7 @@ if is_host:
 
     # Temp
     name_temp = "Temp " + sysName
-    name_temp_topic = name_hi.lower().replace(" ", "_")
+    name_temp_topic = name_temp.lower().replace(" ", "_")
     topic_config_temp = ''.join(['homeassistant/sensor/',sysName,'/',name_temp_topic,'/config'])
     config_temp = ''.join(["{\"name\":\"",name_temp,"\",\"state_topic\": \"",topic_state,"\",\"unit_of_measurement\":\"°C\",\"value_template\":\"{{value_json.temp}}\"}"])
 
