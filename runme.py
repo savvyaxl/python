@@ -72,7 +72,14 @@ if is_host:
     name_hi_topic = name_hi.lower().replace(" ", "_")
     topic_config_hi = ''.join(['homeassistant/sensor/',sysName,'/',name_hi_topic,'/config'])
     config_hi = ''.join(["{\"name\":\"",name_hi,"\",\"state_topic\": \"",topic_state,"\",\"unit_of_measurement\":\"%\",\"value_template\":\"{{value_json.hi}}\"}"])
-    
+
+    # Temp
+    name_temp = "Temp " + sysName
+    name_temp_topic = name_hi.lower().replace(" ", "_")
+    topic_config_temp = ''.join(['homeassistant/sensor/',sysName,'/',name_temp_topic,'/config'])
+    config_temp = ''.join(["{\"name\":\"",name_temp,"\",\"state_topic\": \"",topic_state,"\",\"unit_of_measurement\":\"°C\",\"value_template\":\"{{value_json.temp}}\"}"])
+
+
     # name_us = "CPU US " + sysName
     # name_sy = "CPU SY " + sysName
     # name_ni = "CPU NI " + sysName
@@ -141,6 +148,9 @@ def getMem ():
     data = Run(cmd, capture_output=True, shell=True)
     cmd2 = 'top -bn1 | grep \'%Cpu\' | sed \'s/^%Cpu(s)://\''
     data2 = Run(cmd2, capture_output=True, shell=True)
+    if is_host:
+        cmd3 = 'cat /sys/class/thermal/thermal_zone0/temp | sed 's/\(.\)..$//''
+        data3 = Run(cmd3, capture_output=True, shell=True)
 
     patt = re.compile("[^\s]+")
     total_ = patt.findall(data.stdout.splitlines()[1].decode('utf-8'))[1]
@@ -152,6 +162,7 @@ def getMem ():
     if is_host:
         wa_ = tmp_string[36:41]
         hi_ = tmp_string[45:50]
+        temp_ = data3
     
     srt = "{"
 
@@ -167,6 +178,7 @@ def getMem ():
     if is_host:
         srt = srt + ",\"wa\":" + "\"" + wa_  + "\""
         srt = srt + ",\"hi\":" + "\"" + hi_  + "\""
+        srt = srt + ",\"temp\":" + "\"" + temp_  + "\""
     srt = srt + "}"
     return srt
 
@@ -201,6 +213,8 @@ def configure(client):
         result = client.publish(topic_config_wa, config_wa)
         time.sleep(1)
         result = client.publish(topic_config_hi, config_hi)
+        time.sleep(1)
+        result = client.publish(topic_config_temp, config_temp)
  
 def publish(client):
     msg_count = 1
