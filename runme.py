@@ -163,7 +163,7 @@ def getMem ():
     if is_host:
         wa_ = tmp_string[36:41]
         hi_ = tmp_string[45:50]
-        temp_ = tmp_string3[0:1]
+        temp_ = tmp_string3[1:2]
     
     srt = "{"
 
