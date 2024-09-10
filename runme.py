@@ -156,14 +156,14 @@ def getMem ():
     total_ = patt.findall(data.stdout.splitlines()[1].decode('utf-8'))[1]
     free_ = patt.findall(data.stdout.splitlines()[1].decode('utf-8'))[3]
     tmp_string = data2.stdout.splitlines()[0].decode('utf-8')
-    tmp_string3 = data3.stdout.decode('utf-8')
+    tmp_string3 = data3.stdout.splitlines()[0].decode('utf-8')
     id_ = tmp_string[27:32]
     si_ = tmp_string[54:59]
     st_ = tmp_string[63:68]
     if is_host:
         wa_ = tmp_string[36:41]
         hi_ = tmp_string[45:50]
-        temp_ = tmp_string3
+        temp_ = tmp_string3[0:1]
     
     srt = "{"
 
