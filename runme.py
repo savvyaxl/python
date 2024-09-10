@@ -77,7 +77,7 @@ if is_host:
     name_temp = "Temp " + sysName
     name_temp_topic = name_temp.lower().replace(" ", "_")
     topic_config_temp = ''.join(['homeassistant/sensor/',sysName,'/',name_temp_topic,'/config'])
-    config_temp = ''.join(["{\"name\":\"",name_temp,"\",\"state_topic\": \"",topic_state,"\",\"unit_of_measurement\":\"°C\",\"value_template\":\"{{value_json.temp}}\"}"])
+    config_temp = ''.join(["{\"name\":\"",name_temp,"\",\"state_topic\": \"",topic_state,"\",\"unit_of_measurement\":\"°C\",\"value_template\":\"{{value_json.temp | int}}\"}"])
 
 
     # name_us = "CPU US " + sysName
