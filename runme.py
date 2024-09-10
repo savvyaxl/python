@@ -149,7 +149,7 @@ def getMem ():
     cmd2 = 'top -bn1 | grep \'%Cpu\' | sed \'s/^%Cpu(s)://\''
     data2 = Run(cmd2, capture_output=True, shell=True)
     if is_host:
-        cmd3 = 'cat /sys/class/thermal/thermal_zone0/temp | sed 's/\(.\)..$//''
+        cmd3 = 'cat /sys/class/thermal/thermal_zone0/temp | sed \'s/\(.\)..$//\''
         data3 = Run(cmd3, capture_output=True, shell=True)
 
     patt = re.compile("[^\s]+")
