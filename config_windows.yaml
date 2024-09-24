@@ -1,0 +1,16 @@
+broker: '192.168.0.54'
+port: 1883
+username: 'admin'
+password: 'admin'
+host:
+  broker: '192.168.0.54'
+  port: 1883
+  username: 'admin'
+  password: 'admin'
+
+report:
+  - name: "Total CPU "
+    unit_of_measurement: "%"
+    value: "total"
+    value_template: "total | int"
+    command: 'Powershell "[string][int](Get-Counter ''\Processor(*)\% Processor Time'').Countersamples[0].CookedValue"'
