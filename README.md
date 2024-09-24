@@ -4,5 +4,12 @@ You will need to install Paho using pip3
 
 on Fedora:<br>
 sudo yum install -y python3-pip<br>
+pip3 install --upgrade pip<br>
+pip3 install yaml<br>
 pip3 install paho-mqtt<br>
-python runme.py &
+python runme.py & <br>
+<br>
+Windows: <br>
+py -m pip install --upgrade pip <br>
+py -m pip install yaml<br>
+py -m pip install paho-mqtt<br>
