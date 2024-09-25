@@ -58,6 +58,7 @@ def getMem ():
     for x in range(len(data["report"])):
         if data["report"][x]['enabled']:
             if data["report"][x]['name'] == 'free':
+                print("bob")
                 
 
 
