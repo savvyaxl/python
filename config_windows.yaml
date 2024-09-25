@@ -7,10 +7,16 @@ host:
   port: 1883
   username: 'admin'
   password: 'admin'
-
+timing: 60
+advertize: 60
 report:
   - name: "Total CPU "
     unit_of_measurement: "%"
     value: "total"
     value_template: "total | int"
     command: 'Powershell "[string][int](Get-Counter ''\Processor(*)\% Processor Time'').Countersamples[0].CookedValue"'
+  - name: "Percent Memory "
+    unit_of_measurement: "%"
+    value: "memory"
+    value_template: "memory | int"
+    command: 'Powershell Powershell "(104857600 * (Get-Counter ''\Memory\Available MBytes'').CounterSamples.CookedValue /  (Get-CimInstance Win32_PhysicalMemory | Measure-Object -Property capacity -Sum).Sum).ToString(\"#,0.0\")"'

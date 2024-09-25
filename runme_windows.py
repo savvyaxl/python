@@ -16,10 +16,14 @@ with open('./config_windows.yaml', 'r') as file:
     data = yaml.load(file, Loader=yaml.FullLoader)
 
 # Access the YAML data
-print(data)
+#print(data)
 
 my_agent='host'
+timing = data['timing']
+advertize = data['advertize']
+do_publish = True
 
+# Broker connection
 broker = data[my_agent]['broker']
 port = data[my_agent]['port']
 username = data[my_agent]['username']
@@ -29,7 +33,8 @@ password = data[my_agent]['password']
 client_id = f'python-mqtt-{random.randint(0, 1000)}'
 topic_state = ''.join(["homeassistant/sensor/",sysName,"/state"])
 
-for x in [0]:
+# Set the names and the config queues
+for x in range(len(data["report"])):
     data["report"][x]['name_'] = data["report"][x]['name'] + sysName
     data["report"][x]['topic_'] = data["report"][x]['name_'].lower().replace(" ", "_")
     data["report"][x]['topic_config_'] = ''.join(['homeassistant/sensor/',sysName,'/',data["report"][x]['topic_'],'/config'])
@@ -41,7 +46,6 @@ def connect_mqtt():
             print("Connected to MQTT Broker!")
         else:
             print("Failed to connect, return code %d\n", rc)
-
     client = mqtt_client.Client(mqtt_client.CallbackAPIVersion.VERSION1,client_id)
     client.username_pw_set(username, password)
     client.on_connect = on_connect
@@ -49,21 +53,19 @@ def connect_mqtt():
     return client
 
 def getMem ():
-   
     srt = "{"
-
-    for x in [0]:
-        srt = srt + "\""+data["report"][x]['value']+"\":" + "\"" + Run(data['report'][x]['command'], capture_output=True, shell=True).stdout.splitlines()[x].decode('utf-8')  + "\","
-    
+    for x in range(len(data["report"])):
+        srt = srt + "\""+data["report"][x]['value']+"\":" + "\"" + Run(data['report'][x]['command'], capture_output=True, shell=True).stdout.splitlines()[0].decode('utf-8')  + "\""
+        if x < len(data["report"])-1:
+            srt = srt + ","
     srt = srt + "}"
     return srt
 
-
 def configure(client):
-    for x in [0]:
+    for x in range(len(data["report"])-1):
         result = client.publish(data["report"][x]['topic_config_'], data["report"][x]['config_'] )
         time.sleep(1)
- 
+
 def publish(client):
     msg_count = 1
     configure(client)
@@ -72,17 +74,23 @@ def publish(client):
         msg = getMem ()
         result = client.publish(topic_state, msg)
         msg_count += 1
-        if msg_count > 60:
+        if msg_count > advertize:
             configure(client)
             msg_count = 1
-        time.sleep(60)
+        time.sleep(timing)
 
+def just_print():
+    while True:
+        print(getMem ())
+        time.sleep(timing)
 
 def run():
-    client = connect_mqtt()
-    client.loop_start()
-    publish(client)
-
+    if do_publish:
+        client = connect_mqtt()
+        client.loop_start()
+        publish(client)
+    else:
+        just_print()
 
 if __name__ == '__main__':
     run()

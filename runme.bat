@@ -1,1 +1,1 @@
-py C:\scripts\python\runme.py
+py C:\scripts\python\runme_windows.py
