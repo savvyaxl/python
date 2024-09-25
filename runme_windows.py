@@ -62,7 +62,7 @@ def getMem ():
     return srt
 
 def configure(client):
-    for x in range(len(data["report"])-1):
+    for x in range(len(data["report"])):
         result = client.publish(data["report"][x]['topic_config_'], data["report"][x]['config_'] )
         time.sleep(1)
 

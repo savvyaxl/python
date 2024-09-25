@@ -7,4 +7,72 @@ host:
   port: 1883
   username: 'admin'
   password: 'admin'
+timing: 60
+advertize: 60
+commands:
+  - name: free
+    command: free
+  - name: top
+    command: top -bn1 | grep '%Cpu' | sed 's/^%Cpu(s)://'
+  - name: temp
+    command: cat /sys/class/thermal/thermal_zone0/temp | sed 's/\(.\)..$//'
+report:
+  - name: "Memory Total "
+    unit_of_measurement: "Kb"
+    value: "total"
+    value_template: "value_json.total"
+    command: 'free'
+    enabled: True
+  - name: "Memory Free Percent "
+    unit_of_measurement: "%"
+    value: "free"
+    value_template: "(value_json.free|float*100/value_json.total|float)|round|int"
+    command: 'free'
+    enabled: True
+
+#   %Cpu(s): 30.7 us,  2.9 sy,  0.0 ni, 48.5 id,  0.2 wa,  0.0 hi,  0.0 si, 17.7 st
+#           012345678901234567890123456789012345678901234567890123456789012345678901234567890
+#           0         1         2         3         4         5         6         7         8
+
+  - name: "CPU ID "
+    unit_of_measurement: "%"
+    value: "id"
+    value_template: "value_json.id | int"
+    command: 'top'
+    enabled: True
+    splitlines_:
+      - start: 27
+        end: 32
+
+  - name: "CPU SI "
+    unit_of_measurement: "%"
+    value: "si"
+    value_template: "value_json.si | int"
+    command: 'top'
+    enabled: True
+  - name: "CPU ST "
+    unit_of_measurement: "%"
+    value: "st"
+    value_template: "value_json.st | int"
+    command: 'top'
+    enabled: False
+  - name: "CPU WA "
+    unit_of_measurement: "%"
+    value: "wa"
+    value_template: "value_json.wa | int"
+    command: 'top'
+    enabled: False
+  - name: "CPU HI "
+    unit_of_measurement: "%"
+    value: "hi"
+    value_template: "value_json.hi | int"
+    command: 'top'
+    enabled: False
+
+  - name: "Temp "
+    unit_of_measurement: "%"
+    value: "temp"
+    value_template: "value_json.temp | int"
+    command: 'temp'
+    enabled: False
 

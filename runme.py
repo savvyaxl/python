@@ -20,6 +20,9 @@ print(data)
 
 my_agent='host'
 is_host=1
+timing = data['timing']
+advertize = data['advertize']
+do_publish = True
 
 broker = data[my_agent]['broker']
 port = data[my_agent]['port']
@@ -30,88 +33,13 @@ password = data[my_agent]['password']
 client_id = f'python-mqtt-{random.randint(0, 1000)}'
 topic_state = ''.join(["homeassistant/sensor/",sysName,"/state"])
 
-# Memory Total
-name_total = "Memory Total " + sysName
-name_total_topic = name_total.lower().replace(" ", "_")
-topic_config_total = ''.join(['homeassistant/sensor/',sysName,'/',name_total_topic,'/config'])
-config_total = ''.join(["{\"name\":\"",name_total,"\",\"state_topic\": \"",topic_state,"\",\"unit_of_measurement\":\"Kb\",\"value_template\":\"{{value_json.total}}\"}"])
-# Memory Free Percent
-name_free = "Memory Free Percent " + sysName
-name_free_topic = name_free.lower().replace(" ", "_")
-topic_config_free = ''.join(['homeassistant/sensor/',sysName,'/',name_free_topic,'/config'])
-config_free = ''.join(["{\"name\":\"",name_free,"\",\"state_topic\": \"",topic_state,"\",\"unit_of_measurement\":\"%\",\"value_template\":\"{{(value_json.free|float*100/value_json.total|float)|round|int}}\"}"])
-# CPU ID
-name_id = "CPU ID " + sysName
-name_id_topic = name_id.lower().replace(" ", "_")
-topic_config_id = ''.join(['homeassistant/sensor/',sysName,'/',name_id_topic,'/config'])
-config_id = ''.join(["{\"name\":\"",name_id,"\",\"state_topic\": \"",topic_state,"\",\"unit_of_measurement\":\"%\",\"value_template\":\"{{value_json.id}}\"}"])
-# CPU SI
-name_si = "CPU SI " + sysName
-name_si_topic = name_si.lower().replace(" ", "_")
-topic_config_si = ''.join(['homeassistant/sensor/',sysName,'/',name_si_topic,'/config'])
-config_si = ''.join(["{\"name\":\"",name_si,"\",\"state_topic\": \"",topic_state,"\",\"unit_of_measurement\":\"%\",\"value_template\":\"{{value_json.si}}\"}"])
-
-# CPU ST
-name_st = "CPU ST " + sysName
-name_st_topic = name_st.lower().replace(" ", "_")
-topic_config_st = ''.join(['homeassistant/sensor/',sysName,'/',name_st_topic,'/config'])
-config_st = ''.join(["{\"name\":\"",name_st,"\",\"state_topic\": \"",topic_state,"\",\"unit_of_measurement\":\"%\",\"value_template\":\"{{value_json.st}}\"}"])
-
-# name_used = "Memory Used " + sysName
-
-if is_host:
-    # CPU WA
-    name_wa = "CPU WA " + sysName
-    name_wa_topic = name_wa.lower().replace(" ", "_")
-    topic_config_wa = ''.join(['homeassistant/sensor/',sysName,'/',name_wa_topic,'/config'])
-    config_wa = ''.join(["{\"name\":\"",name_wa,"\",\"state_topic\": \"",topic_state,"\",\"unit_of_measurement\":\"%\",\"value_template\":\"{{value_json.wa}}\"}"])
-
-
-    # CPU HI
-    name_hi = "CPU HI " + sysName
-    name_hi_topic = name_hi.lower().replace(" ", "_")
-    topic_config_hi = ''.join(['homeassistant/sensor/',sysName,'/',name_hi_topic,'/config'])
-    config_hi = ''.join(["{\"name\":\"",name_hi,"\",\"state_topic\": \"",topic_state,"\",\"unit_of_measurement\":\"%\",\"value_template\":\"{{value_json.hi}}\"}"])
-
-    # Temp
-    name_temp = "Temp " + sysName
-    name_temp_topic = name_temp.lower().replace(" ", "_")
-    topic_config_temp = ''.join(['homeassistant/sensor/',sysName,'/',name_temp_topic,'/config'])
-    config_temp = ''.join(["{\"name\":\"",name_temp,"\",\"state_topic\": \"",topic_state,"\",\"unit_of_measurement\":\"°C\",\"value_template\":\"{{value_json.temp | int}}\"}"])
-
-
-    # name_us = "CPU US " + sysName
-    # name_sy = "CPU SY " + sysName
-    # name_ni = "CPU NI " + sysName
-
-
-
-
-# name_used_topic = name_used.lower().replace(" ", "_")
-# name_us_topic = name_us.lower().replace(" ", "_")
-# name_sy_topic = name_sy.lower().replace(" ", "_")
-# name_ni_topic = name_ni.lower().replace(" ", "_")
-
-
-
-
-# topic_config_used = ''.join(['homeassistant/sensor/',sysName,'/',name_used_topic,'/config'])
-# topic_config_us = ''.join(['homeassistant/sensor/',sysName,'/',name_us_topic,'/config'])
-# topic_config_sy = ''.join(['homeassistant/sensor/',sysName,'/',name_sy_topic,'/config'])
-# topic_config_ni = ''.join(['homeassistant/sensor/',sysName,'/',name_ni_topic,'/config'])
-
-
-
-
-# config_used = ''.join(["{\"name\":\"",name_used,"\",\"state_topic\": \"",topic_state,"\",\"unit_of_measurement\":\"%\",\"value_template\":\"{{(100*value_json.used/value_json.total)|round|int}}\"}"])
-# config_us = ''.join(["{\"name\":\"",name_us,"\",\"state_topic\": \"",topic_state,"\",\"unit_of_measurement\":\"%\",\"value_template\":\"{{value_json.us}}\"}"])
-# config_sy = ''.join(["{\"name\":\"",name_sy,"\",\"state_topic\": \"",topic_state,"\",\"unit_of_measurement\":\"%\",\"value_template\":\"{{value_json.sy}}\"}"])
-# config_ni = ''.join(["{\"name\":\"",name_ni,"\",\"state_topic\": \"",topic_state,"\",\"unit_of_measurement\":\"%\",\"value_template\":\"{{value_json.ni}}\"}"])
-
-
-
-#{"device_class": "illuminance", "name": "Green",               "state_topic": "homeassistant/sensor/tcs_8caab51b443e/state", "unit_of_measurement": "lx", "value_template": "{{ value_json.green8caab51b443e}}" }
-#{"device_class": "None",        "name": "Memory_Free_ansible", "state_topic": "homeassistant/sensor/ansible/state",          "unit_of_measurement": "%",  "value_template": "{{value_json.free}}"}
+# Set the names and the config queues
+for x in range(len(data["report"])):
+    if data["report"][x]['enabled']:
+        data["report"][x]['name_'] = data["report"][x]['name'] + sysName
+        data["report"][x]['topic_'] = data["report"][x]['name_'].lower().replace(" ", "_")
+        data["report"][x]['topic_config_'] = ''.join(['homeassistant/sensor/',sysName,'/',data["report"][x]['topic_'],'/config'])
+        data["report"][x]['config_'] = ''.join(["{\"name\":\"",data["report"][x]['name_'],"\",\"state_topic\": \"",topic_state,"\",\"unit_of_measurement\":\"",data["report"][x]['unit_of_measurement'],"\",\"value_template\":\"{{",data["report"][x]['value_template'],"}}\"}"])
 
 def connect_mqtt():
     def on_connect(client, userdata, flags, rc):
@@ -144,6 +72,14 @@ def getMem ():
 #   %Cpu(s): 30.7 us,  2.9 sy,  0.0 ni, 48.5 id,  0.2 wa,  0.0 hi,  0.0 si, 17.7 st
 #            12345678901234567890123456789012345678901234567890123456789012345678901234567890
 #           0         1         2         3         4         5         6         7         8
+
+
+    for x in range(len(data["report"])):
+        if data["report"][x]['enabled']:
+            if data["report"][x]['name'] == 'free':
+                
+
+
     cmd = 'free'
     data = Run(cmd, capture_output=True, shell=True)
     cmd2 = 'top -bn1 | grep \'%Cpu\' | sed \'s/^%Cpu(s)://\''
@@ -185,37 +121,10 @@ def getMem ():
 
 
 def configure(client):
-    result = client.publish(topic_config_total, config_total)
-    time.sleep(1)
-    result = client.publish(topic_config_free, config_free)
-    time.sleep(1)
-    result = client.publish(topic_config_id, config_id)
-    time.sleep(1)
-    result = client.publish(topic_config_si, config_si)
-    time.sleep(1)
-    result = client.publish(topic_config_st, config_st)
-    time.sleep(1)
-
-
-
-
-    # time.sleep(1)
-    # result = client.publish(topic_config_used, config_used)
-    # time.sleep(1)
-    # time.sleep(1)
-    # result = client.publish(topic_config_us, config_us)
-    # time.sleep(1)
-    # result = client.publish(topic_config_sy, config_sy)
-    # time.sleep(1)
-    # result = client.publish(topic_config_ni, config_ni)
-
-    if is_host:
-        time.sleep(1)
-        result = client.publish(topic_config_wa, config_wa)
-        time.sleep(1)
-        result = client.publish(topic_config_hi, config_hi)
-        time.sleep(1)
-        result = client.publish(topic_config_temp, config_temp)
+    for x in range(len(data["report"])):
+        if data["report"][x]['enabled']:
+            result = client.publish(data["report"][x]['topic_config_'], data["report"][x]['config_'] )
+            time.sleep(1)
  
 def publish(client):
     msg_count = 1
