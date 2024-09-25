@@ -55,25 +55,6 @@ def connect_mqtt():
     return client
 
 def getMem ():
-
-
-    #print(f"Send `{data2}`")
-    #return data.stdout.splitlines()[1].decode('utf-8').split("\t")[1]
-
-    # patt2 = re.compile("[^\s]+")
-    # used_ = patt.findall(data.stdout.splitlines()[1].decode('utf-8'))[2]
-
-    
-    # us_ = tmp_string[0:5]
-    # sy_ = tmp_string[9:14]
-    # ni_ = tmp_string[18:23]
-    # return ''.join(["{\"total\":",total_,",\"used\":",used_,",\"free\":",free_,",\"us\":",us_,",\"sy\":",sy_,",\"ni\":",ni_,",\"id\":",id_,",\"wa\":",wa_,",\"hi\":",hi_,",\"si\":",si_,",\"st\":",st_,"}"])
-    
-#   %Cpu(s): 30.7 us,  2.9 sy,  0.0 ni, 48.5 id,  0.2 wa,  0.0 hi,  0.0 si, 17.7 st
-#            12345678901234567890123456789012345678901234567890123456789012345678901234567890
-#           0         1         2         3         4         5         6         7         8
-
-
     for x in range(len(data["report"])):
         if data["report"][x]['enabled']:
             if data["report"][x]['name'] == 'free':
