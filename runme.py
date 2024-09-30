@@ -81,7 +81,7 @@ def getMem (data):
                 if data["commands"][y]['name'] == data["report"][x]['command']:
                     if not data["commands"][y]['ranit']:
                         data["commands"][y]['result'] = Run(data["commands"][y]['command'], capture_output=True, shell=True)
-                    data["report"][x]['result'] = parse_disk (data["commands"][y]['result'],data["report"][x]['splitlines_'])
+                    data["report"][x]['result'] = parse_disk (data["commands"][y]['result'])
                     data["commands"][y]['ranit'] = True        
 
     srt = "{"
