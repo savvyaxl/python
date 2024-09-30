@@ -92,7 +92,7 @@ def getMem (data):
         #     #srt = srt + "\""+data["report"][x]['value']+"\":" + "\"" + Run(data['report'][x]['command'], capture_output=True, shell=True).stdout.decode('utf-8')  + "\""     
         #     srt = srt + Run(data['report'][x]['command'], capture_output=True, shell=True).stdout.decode('utf-8') 
         
-        if x < len(data["report"]-1):
+        if x < len(data["report"])-1:
             srt = srt + ","
     srt = srt + "}"
     print(srt)
