@@ -15,7 +15,6 @@ commands:
   - name: free
     command: free
     ranit: False
-    result: ""
   - name: top
     command: top -bn1 | grep '%Cpu' | sed 's/^%Cpu(s)://'
     ranit: False
@@ -24,7 +23,7 @@ commands:
     ranit: False
 
 report:
-  - name: "Memory Total "
+  - name: "Memory Total"
     unit_of_measurement: "Kb"
     value: "total"
     value_template: "value_json.total"
@@ -33,7 +32,7 @@ report:
     rx: "[^\\s]+"
     no1: 1
     no2: 1
-  - name: "Memory Free Percent "
+  - name: "Memory Free Percent"
     unit_of_measurement: "%"
     value: "free"
     value_template: "(value_json.free|float*100/value_json.total|float)|round|int"
@@ -47,7 +46,7 @@ report:
 #           012345678901234567890123456789012345678901234567890123456789012345678901234567890
 #           0         1         2         3         4         5         6         7         8
 
-  - name: "CPU US "
+  - name: "CPU US"
     unit_of_measurement: "%"
     value: "us"
     value_template: "value_json.us | int"
@@ -56,7 +55,7 @@ report:
       - 0
       - 5
 
-  - name: "CPU SY "
+  - name: "CPU SY"
     unit_of_measurement: "%"
     value: "sy"
     value_template: "value_json.sy | int"
@@ -65,7 +64,7 @@ report:
       - 9
       - 14
 
-  - name: "CPU ID "
+  - name: "CPU ID"
     unit_of_measurement: "%"
     value: "id"
     value_template: "value_json.id | int"
@@ -74,7 +73,7 @@ report:
       - 27
       - 32
 
-  - name: "CPU WA "
+  - name: "CPU WA"
     unit_of_measurement: "%"
     value: "wa"
     value_template: "value_json.wa | int"
@@ -83,7 +82,7 @@ report:
       - 36
       - 41
 
-  - name: "CPU HI "
+  - name: "CPU HI"
     unit_of_measurement: "%"
     value: "hi"
     value_template: "value_json.hi | int"
@@ -92,7 +91,7 @@ report:
       - 45
       - 50
 
-  - name: "CPU SI "
+  - name: "CPU SI"
     unit_of_measurement: "%"
     value: "si"
     value_template: "value_json.si | int"
@@ -101,7 +100,7 @@ report:
       - 54
       - 59
 
-  - name: "CPU ST "
+  - name: "CPU ST"
     unit_of_measurement: "%"
     value: "st"
     value_template: "value_json.st | int"
@@ -111,10 +110,10 @@ report:
       - 68
 
 
-  # - name: "Temp "
-  #   unit_of_measurement: "%"
-  #   value: "temp"
-  #   value_template: "value_json.temp | int"
-  #   command: 'temp'
-  #   enabled: False
+  - name: "Temp"
+    unit_of_measurement: "%"
+    value: "temp"
+    value_template: "value_json.temp | int"
+    command: 'temp'
+    enabled: False
 

@@ -50,12 +50,15 @@ def connect_mqtt():
     client.connect(broker, port)
     return client
 
-def parse (rx,data_,no1,no2):
+def parse_free (rx,data_,no1,no2):
     patt = re.compile(rx)
     return patt.findall(data_.stdout.splitlines()[no1].decode('utf-8'))[no2]
 
 def parse_top (data_, splitlines_):
     return data_.stdout.splitlines()[0].decode('utf-8')[splitlines_[0]:splitlines_[1]]
+
+def parse_disk (data_):
+    return data_.stdout.splitlines()[0].decode('utf-8')
 
 def getMem (data):
     for x in range(len(data["report"])):
@@ -64,7 +67,7 @@ def getMem (data):
                 if data["commands"][y]['name'] == data["report"][x]['command']:
                     if not data["commands"][y]['ranit']:
                         data["commands"][y]['result'] = Run(data["commands"][y]['command'], capture_output=True, shell=True)
-                    data["report"][x]['result'] = parse (data["report"][x]['rx'],data["commands"][y]['result'],data["report"][x]['no1'],data["report"][x]['no2'])
+                    data["report"][x]['result'] = parse_free (data["report"][x]['rx'],data["commands"][y]['result'],data["report"][x]['no1'],data["report"][x]['no2'])
                     data["commands"][y]['ranit'] = True
         if data["report"][x]['command'] == 'top':
             for y in range(len(data["commands"])):
@@ -72,6 +75,13 @@ def getMem (data):
                     if not data["commands"][y]['ranit']:
                         data["commands"][y]['result'] = Run(data["commands"][y]['command'], capture_output=True, shell=True)
                     data["report"][x]['result'] = parse_top (data["commands"][y]['result'],data["report"][x]['splitlines_'])
+                    data["commands"][y]['ranit'] = True        
+        if data["report"][x]['command'] == 'temp':
+            for y in range(len(data["commands"])):
+                if data["commands"][y]['name'] == data["report"][x]['command']:
+                    if not data["commands"][y]['ranit']:
+                        data["commands"][y]['result'] = Run(data["commands"][y]['command'], capture_output=True, shell=True)
+                    data["report"][x]['result'] = parse_disk (data["commands"][y]['result'],data["report"][x]['splitlines_'])
                     data["commands"][y]['ranit'] = True        
 
     srt = "{"
