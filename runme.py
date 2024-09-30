@@ -80,7 +80,6 @@ def getMem (data):
         if x < len(data["report"])-1:
             srt = srt + ","
     srt = srt + "}"
-    print(srt)
     return srt
 
 def configure(client):
