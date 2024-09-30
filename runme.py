@@ -16,13 +16,11 @@ with open('./config.yaml', 'r') as file:
     data = yaml.load(file, Loader=yaml.FullLoader)
 
 # Access the YAML data
-print(data)
+#print(data)
 
 my_agent='host'
-is_host=1
 timing = data['timing']
 advertize = data['advertize']
-do_publish = True
 
 broker = data[my_agent]['broker']
 port = data[my_agent]['port']
@@ -46,7 +44,6 @@ def connect_mqtt():
             print("Connected to MQTT Broker!")
         else:
             print("Failed to connect, return code %d\n", rc)
-
     client = mqtt_client.Client(client_id)  #mqtt_client.CallbackAPIVersion.VERSION1,
     client.username_pw_set(username, password)
     client.on_connect = on_connect
@@ -75,8 +72,7 @@ def getMem (data):
                     if not data["commands"][y]['ranit']:
                         data["commands"][y]['result'] = Run(data["commands"][y]['command'], capture_output=True, shell=True)
                     data["report"][x]['result'] = parse_top (data["commands"][y]['result'],data["report"][x]['splitlines_'])
-                    data["commands"][y]['ranit'] = True
-               
+                    data["commands"][y]['ranit'] = True        
     srt = "{"
     for x in range(len(data["report"])):
         srt = srt + "\""+data["report"][x]['value']+"\":" + data["report"][x]['result']
@@ -87,11 +83,9 @@ def getMem (data):
     print(srt)
     return srt
 
-
 def configure(client):
     for x in range(len(data["report"])):
         result = client.publish(data["report"][x]['topic_config_'], data["report"][x]['config_'] )
-        print(result)
         time.sleep(1)
  
 def publish(client):
