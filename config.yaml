@@ -26,7 +26,6 @@ report:
     value: "total"
     value_template: "value_json.total"
     command: 'free'
-    enabled: True
     result: ""
     rx: "[^\\s]+"
     no1: 1
@@ -36,7 +35,6 @@ report:
     value: "free"
     value_template: "(value_json.free|float*100/value_json.total|float)|round|int"
     command: 'free'
-    enabled: True
     result: ""
     rx: "[^\\s]+"
     no1: 1
@@ -51,7 +49,6 @@ report:
     value: "id"
     value_template: "value_json.id | int"
     command: 'top'
-    enabled: True
     splitlines_:
       - 27
       - 32
@@ -61,35 +58,36 @@ report:
     value: "si"
     value_template: "value_json.si | int"
     command: 'top'
-    enabled: True
     splitlines_:
       - 54
       - 59
 
-  # - name: "CPU SI "
-  #   unit_of_measurement: "%"
-  #   value: "si"
-  #   value_template: "value_json.si | int"
-  #   command: 'top'
-  #   enabled: False
-  # - name: "CPU ST "
-  #   unit_of_measurement: "%"
-  #   value: "st"
-  #   value_template: "value_json.st | int"
-  #   command: 'top'
-  #   enabled: False
-  # - name: "CPU WA "
-  #   unit_of_measurement: "%"
-  #   value: "wa"
-  #   value_template: "value_json.wa | int"
-  #   command: 'top'
-  #   enabled: True
-  # - name: "CPU HI "
-  #   unit_of_measurement: "%"
-  #   value: "hi"
-  #   value_template: "value_json.hi | int"
-  #   command: 'top'
-  #   enabled: False
+  - name: "CPU ST "
+    unit_of_measurement: "%"
+    value: "st"
+    value_template: "value_json.st | int"
+    command: 'top'
+    splitlines_:
+      - 63
+      - 68
+
+  - name: "CPU WA "
+    unit_of_measurement: "%"
+    value: "wa"
+    value_template: "value_json.wa | int"
+    command: 'top'
+    splitlines_:
+      - 36
+      - 41
+
+  - name: "CPU HI "
+    unit_of_measurement: "%"
+    value: "hi"
+    value_template: "value_json.hi | int"
+    command: 'top'
+    splitlines_:
+      - 45
+      - 50
 
   # - name: "Temp "
   #   unit_of_measurement: "%"
