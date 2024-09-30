@@ -56,6 +56,16 @@ report:
       - 27
       - 32
 
+  - name: "CPU SI "
+    unit_of_measurement: "%"
+    value: "si"
+    value_template: "value_json.si | int"
+    command: 'top'
+    enabled: True
+    splitlines_:
+      - 54
+      - 59
+
   # - name: "CPU SI "
   #   unit_of_measurement: "%"
   #   value: "si"

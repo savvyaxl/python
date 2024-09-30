@@ -35,11 +35,11 @@ topic_state = ''.join(["homeassistant/sensor/",sysName,"/state"])
 
 # Set the names and the config queues
 for x in range(len(data["report"])):
-    if data["report"][x]['enabled']:
-        data["report"][x]['name_'] = data["report"][x]['name'] + sysName
-        data["report"][x]['topic_'] = data["report"][x]['name_'].lower().replace(" ", "_")
-        data["report"][x]['topic_config_'] = ''.join(['homeassistant/sensor/',sysName,'/',data["report"][x]['topic_'],'/config'])
-        data["report"][x]['config_'] = ''.join(["{\"name\":\"",data["report"][x]['name_'],"\",\"state_topic\": \"",topic_state,"\",\"unit_of_measurement\":\"",data["report"][x]['unit_of_measurement'],"\",\"value_template\":\"{{",data["report"][x]['value_template'],"}}\"}"])
+    # if data["report"][x]['enabled']:
+    data["report"][x]['name_'] = data["report"][x]['name'] + sysName
+    data["report"][x]['topic_'] = data["report"][x]['name_'].lower().replace(" ", "_")
+    data["report"][x]['topic_config_'] = ''.join(['homeassistant/sensor/',sysName,'/',data["report"][x]['topic_'],'/config'])
+    data["report"][x]['config_'] = ''.join(["{\"name\":\"",data["report"][x]['name_'],"\",\"state_topic\": \"",topic_state,"\",\"unit_of_measurement\":\"",data["report"][x]['unit_of_measurement'],"\",\"value_template\":\"{{",data["report"][x]['value_template'],"}}\"}"])
 
 def connect_mqtt():
     def on_connect(client, userdata, flags, rc):
@@ -64,26 +64,26 @@ def parse_top (data_, splitlines_):
 
 def getMem (data):
     for x in range(len(data["report"])):
-        if data["report"][x]['enabled']:
-            if data["report"][x]['command'] == 'free':
-                for y in range(len(data["commands"])):
-                    if data["commands"][y]['name'] == data["report"][x]['command']:
-                        if not data["commands"][y]['ranit']:
-                            data["commands"][y]['result'] = Run(data["commands"][y]['command'], capture_output=True, shell=True)
-                        data["report"][x]['result'] = parse (data["report"][x]['rx'],data["commands"][y]['result'],data["report"][x]['no1'],data["report"][x]['no2'])
-                        data["commands"][y]['ranit'] = True
-            if data["report"][x]['command'] == 'top':
-                for y in range(len(data["commands"])):
-                    if data["commands"][y]['name'] == data["report"][x]['command']:
-                        if not data["commands"][y]['ranit']:
-                            data["commands"][y]['result'] = Run(data["commands"][y]['command'], capture_output=True, shell=True)
-                        data["report"][x]['result'] = parse_top (data["commands"][y]['result'],data["report"][x]['splitlines_'])
-                        data["commands"][y]['ranit'] = True
+        # if data["report"][x]['enabled']:
+        if data["report"][x]['command'] == 'free':
+            for y in range(len(data["commands"])):
+                if data["commands"][y]['name'] == data["report"][x]['command']:
+                    if not data["commands"][y]['ranit']:
+                        data["commands"][y]['result'] = Run(data["commands"][y]['command'], capture_output=True, shell=True)
+                    data["report"][x]['result'] = parse (data["report"][x]['rx'],data["commands"][y]['result'],data["report"][x]['no1'],data["report"][x]['no2'])
+                    data["commands"][y]['ranit'] = True
+        if data["report"][x]['command'] == 'top':
+            for y in range(len(data["commands"])):
+                if data["commands"][y]['name'] == data["report"][x]['command']:
+                    if not data["commands"][y]['ranit']:
+                        data["commands"][y]['result'] = Run(data["commands"][y]['command'], capture_output=True, shell=True)
+                    data["report"][x]['result'] = parse_top (data["commands"][y]['result'],data["report"][x]['splitlines_'])
+                    data["commands"][y]['ranit'] = True
                
     srt = "{"
     for x in range(len(data["report"])):
-        if data["report"][x]['enabled']:
-            srt = srt + "\""+data["report"][x]['value']+"\":" + data["report"][x]['result']
+#        if data["report"][x]['enabled']:
+        srt = srt + "\""+data["report"][x]['value']+"\":" + data["report"][x]['result']
 
 
         # if data['report'][x]['value_type'] == "int":
@@ -141,9 +141,9 @@ def getMem (data):
 
 def configure(client):
     for x in range(len(data["report"])):
-        if data["report"][x]['enabled']:
-            result = client.publish(data["report"][x]['topic_config_'], data["report"][x]['config_'] )
-            time.sleep(1)
+        # if data["report"][x]['enabled']:
+        result = client.publish(data["report"][x]['topic_config_'], data["report"][x]['config_'] )
+        time.sleep(1)
  
 def publish(client):
     msg_count = 1
