@@ -107,7 +107,6 @@ def publish(client):
     configure(client)
     
     while True:
-        print(data)
         msg = getMem (data)
         result = client.publish(topic_state, msg)
         msg_count += 1
