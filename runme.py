@@ -35,7 +35,6 @@ topic_state = ''.join(["homeassistant/sensor/",sysName,"/state"])
 
 # Set the names and the config queues
 for x in range(len(data["report"])):
-    # if data["report"][x]['enabled']:
     data["report"][x]['name_'] = data["report"][x]['name'] + sysName
     data["report"][x]['topic_'] = data["report"][x]['name_'].lower().replace(" ", "_")
     data["report"][x]['topic_config_'] = ''.join(['homeassistant/sensor/',sysName,'/',data["report"][x]['topic_'],'/config'])
@@ -55,7 +54,6 @@ def connect_mqtt():
     return client
 
 def parse (rx,data_,no1,no2):
-    # rx = "[^\s]+"
     patt = re.compile(rx)
     return patt.findall(data_.stdout.splitlines()[no1].decode('utf-8'))[no2]
 
@@ -64,7 +62,6 @@ def parse_top (data_, splitlines_):
 
 def getMem (data):
     for x in range(len(data["report"])):
-        # if data["report"][x]['enabled']:
         if data["report"][x]['command'] == 'free':
             for y in range(len(data["commands"])):
                 if data["commands"][y]['name'] == data["report"][x]['command']:
@@ -82,15 +79,7 @@ def getMem (data):
                
     srt = "{"
     for x in range(len(data["report"])):
-#        if data["report"][x]['enabled']:
         srt = srt + "\""+data["report"][x]['value']+"\":" + data["report"][x]['result']
-
-
-        # if data['report'][x]['value_type'] == "int":
-        #     srt = srt + "\""+data["report"][x]['value']+"\":" + Run(data['report'][x]['command'], capture_output=True, shell=True).stdout.splitlines()[0].decode('utf-8')
-        # if data['report'][x]['value_type'] == "json":
-        #     #srt = srt + "\""+data["report"][x]['value']+"\":" + "\"" + Run(data['report'][x]['command'], capture_output=True, shell=True).stdout.decode('utf-8')  + "\""     
-        #     srt = srt + Run(data['report'][x]['command'], capture_output=True, shell=True).stdout.decode('utf-8') 
         
         if x < len(data["report"])-1:
             srt = srt + ","
@@ -99,49 +88,8 @@ def getMem (data):
     return srt
 
 
-    # cmd = 'free'
-    # data1 = Run(cmd, capture_output=True, shell=True)
-    # cmd2 = 'top -bn1 | grep \'%Cpu\' | sed \'s/^%Cpu(s)://\''
-    # data2 = Run(cmd2, capture_output=True, shell=True)
-    # cmd3 = 'cat /sys/class/thermal/thermal_zone0/temp | sed \'s/\(.\)..$//\''
-    # data3 = Run(cmd3, capture_output=True, shell=True)
-
-    # patt = re.compile("[^\s]+")
-    # total_ = patt.findall(data1.stdout.splitlines()[1].decode('utf-8'))[1]
-    # free_ = patt.findall(data1.stdout.splitlines()[1].decode('utf-8'))[3]
-    # tmp_string = data2.stdout.splitlines()[0].decode('utf-8')
-    # print(tmp_string)
-    # tmp_string3 = data3.stdout.splitlines()[0].decode('utf-8')
-    # id_ = tmp_string[27:32]
-    # si_ = tmp_string[54:59]
-    # st_ = tmp_string[63:68]
-    # if is_host:
-    #     wa_ = tmp_string[36:41]
-    #     hi_ = tmp_string[45:50]
-    #     temp_ = tmp_string3[0:2]
-    
-    # srt = "{"
-
-    # # srt = srt + ",\"used\":" + "\"" + used_  + "\""
-    # # srt = srt + ",\"us\":" + "\"" + us_  + "\""
-    # # srt = srt + ",\"sy\":" + "\"" + sy_  + "\""
-    # # srt = srt + ",\"ni\":" + "\"" + ni_  + "\""
-    # srt = srt + "\"id\":" + "\"" + id_  + "\""
-    # srt = srt + ",\"total\":" + "\"" + total_  + "\""
-    # srt = srt + ",\"free\":" + "\"" + free_  + "\""
-    # srt = srt + ",\"si\":" + "\"" + si_  + "\""
-    # srt = srt + ",\"st\":" + "\"" + st_  + "\""
-    # if is_host:
-    #     srt = srt + ",\"wa\":" + "\"" + wa_  + "\""
-    #     srt = srt + ",\"hi\":" + "\"" + hi_  + "\""
-    #     srt = srt + ",\"temp\":" + "\"" + temp_  + "\""
-    # srt = srt + "}"
-    # return srt
-
-
 def configure(client):
     for x in range(len(data["report"])):
-        # if data["report"][x]['enabled']:
         result = client.publish(data["report"][x]['topic_config_'], data["report"][x]['config_'] )
         print(result)
         time.sleep(1)
