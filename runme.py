@@ -143,6 +143,7 @@ def configure(client):
     for x in range(len(data["report"])):
         # if data["report"][x]['enabled']:
         result = client.publish(data["report"][x]['topic_config_'], data["report"][x]['config_'] )
+        print(result)
         time.sleep(1)
  
 def publish(client):
