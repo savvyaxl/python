@@ -86,7 +86,7 @@ def getMem (data):
             #if data['report'][x]['value_type'] != "just config":
             srt = srt + ","
     srt = srt + "}"
-
+    print(srt)
     return srt
 
 
