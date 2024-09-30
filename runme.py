@@ -73,6 +73,7 @@ def getMem (data):
                         data["commands"][y]['result'] = Run(data["commands"][y]['command'], capture_output=True, shell=True)
                     data["report"][x]['result'] = parse_top (data["commands"][y]['result'],data["report"][x]['splitlines_'])
                     data["commands"][y]['ranit'] = True        
+
     srt = "{"
     for x in range(len(data["report"])):
         srt = srt + "\""+data["report"][x]['value']+"\":" + data["report"][x]['result']
@@ -95,10 +96,10 @@ def publish(client):
         msg = getMem (data)
         result = client.publish(topic_state, msg)
         msg_count += 1
-        if msg_count > 60:
+        if msg_count > advertize:
             configure(client)
             msg_count = 1
-        time.sleep(60)
+        time.sleep(timing)
 
 
 def run():

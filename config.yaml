@@ -2,6 +2,7 @@ broker: '192.168.0.54'
 port: 1883
 username: 'admin'
 password: 'admin'
+
 host:
   broker: '192.168.0.54'
   port: 1883
@@ -9,6 +10,7 @@ host:
   password: 'admin'
 timing: 60
 advertize: 60
+
 commands:
   - name: free
     command: free
@@ -20,6 +22,7 @@ commands:
   - name: temp
     command: cat /sys/class/thermal/thermal_zone0/temp | sed 's/\(.\)..$//'
     ranit: False
+
 report:
   - name: "Memory Total "
     unit_of_measurement: "Kb"
@@ -71,6 +74,24 @@ report:
       - 27
       - 32
 
+  - name: "CPU WA "
+    unit_of_measurement: "%"
+    value: "wa"
+    value_template: "value_json.wa | int"
+    command: 'top'
+    splitlines_:
+      - 36
+      - 41
+
+  - name: "CPU HI "
+    unit_of_measurement: "%"
+    value: "hi"
+    value_template: "value_json.hi | int"
+    command: 'top'
+    splitlines_:
+      - 45
+      - 50
+
   - name: "CPU SI "
     unit_of_measurement: "%"
     value: "si"
@@ -89,23 +110,6 @@ report:
       - 63
       - 68
 
-  - name: "CPU WA "
-    unit_of_measurement: "%"
-    value: "wa"
-    value_template: "value_json.wa | int"
-    command: 'top'
-    splitlines_:
-      - 36
-      - 41
-
-  - name: "CPU HI "
-    unit_of_measurement: "%"
-    value: "hi"
-    value_template: "value_json.hi | int"
-    command: 'top'
-    splitlines_:
-      - 45
-      - 50
 
   # - name: "Temp "
   #   unit_of_measurement: "%"
