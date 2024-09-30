@@ -35,7 +35,7 @@ topic_state = ''.join(["homeassistant/sensor/",sysName,"/state"])
 
 # Set the names and the config queues
 for x in range(len(data["report"])):
-    data["report"][x]['name_'] = data["report"][x]['name'] + sysName
+    data["report"][x]['name_'] = sysName + ' ' + data["report"][x]['name']
     data["report"][x]['topic_'] = data["report"][x]['name_'].lower().replace(" ", "_")
     data["report"][x]['topic_config_'] = ''.join(['homeassistant/sensor/',sysName,'/',data["report"][x]['topic_'],'/config'])
     data["report"][x]['config_'] = ''.join(["{\"name\":\"",data["report"][x]['name_'],"\",\"state_topic\": \"",topic_state,"\",\"unit_of_measurement\":\"",data["report"][x]['unit_of_measurement'],"\",\"value_template\":\"{{",data["report"][x]['value_template'],"}}\"}"])
