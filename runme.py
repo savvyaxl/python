@@ -59,6 +59,9 @@ def parse (rx,data_,no1,no2):
     patt = re.compile(rx)
     return patt.findall(data_.stdout.splitlines()[no1].decode('utf-8'))[no2]
 
+def parse_top (data_, splitlines_):
+    return data_.stdout.splitlines()[0].decode('utf-8')[splitlines_[0]:splitlines_[1]]
+
 def getMem (data):
     for x in range(len(data["report"])):
         if data["report"][x]['enabled']:
@@ -68,6 +71,13 @@ def getMem (data):
                         if not data["commands"][y]['ranit']:
                             data["commands"][y]['result'] = Run(data["commands"][y]['command'], capture_output=True, shell=True)
                         data["report"][x]['result'] = parse (data["report"][x]['rx'],data["commands"][y]['result'],data["report"][x]['no1'],data["report"][x]['no2'])
+                        data["commands"][y]['ranit'] = True
+            if data["report"][x]['command'] == 'top':
+                for y in range(len(data["commands"])):
+                    if data["commands"][y]['name'] == data["report"][x]['command']:
+                        if not data["commands"][y]['ranit']:
+                            data["commands"][y]['result'] = Run(data["commands"][y]['command'], capture_output=True, shell=True)
+                        data["report"][x]['result'] = parse_top (data["commands"][y]['result'],data["report"][x]['splitlines_'])
                         data["commands"][y]['ranit'] = True
                
     srt = "{"
@@ -82,8 +92,7 @@ def getMem (data):
         #     #srt = srt + "\""+data["report"][x]['value']+"\":" + "\"" + Run(data['report'][x]['command'], capture_output=True, shell=True).stdout.decode('utf-8')  + "\""     
         #     srt = srt + Run(data['report'][x]['command'], capture_output=True, shell=True).stdout.decode('utf-8') 
         
-        if x < len(data["report"]):
-            #if data['report'][x]['value_type'] != "just config":
+        if x < len(data["report"]-1):
             srt = srt + ","
     srt = srt + "}"
     print(srt)
