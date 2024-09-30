@@ -12,7 +12,7 @@ from paho.mqtt import client as mqtt_client
 
 sysName = socket.gethostname().split(".")[0]
 
-with open('/home/alex/python/config.yaml', 'r') as file:
+with open('./config.yaml', 'r') as file:
     data = yaml.load(file, Loader=yaml.FullLoader)
 
 # Access the YAML data
@@ -48,58 +48,86 @@ def connect_mqtt():
         else:
             print("Failed to connect, return code %d\n", rc)
 
-    client = mqtt_client.Client(mqtt_client.CallbackAPIVersion.VERSION1,client_id)
+    client = mqtt_client.Client(client_id)  #mqtt_client.CallbackAPIVersion.VERSION1,
     client.username_pw_set(username, password)
     client.on_connect = on_connect
     client.connect(broker, port)
     return client
 
-def getMem ():
+def parse (rx,data_,no1,no2):
+    # rx = "[^\s]+"
+    patt = re.compile(rx)
+    return patt.findall(data_.stdout.splitlines()[no1].decode('utf-8'))[no2]
+
+def getMem (data):
     for x in range(len(data["report"])):
         if data["report"][x]['enabled']:
-            if data["report"][x]['name'] == 'free':
-                print("bob")
-                
-
-
-    cmd = 'free'
-    data = Run(cmd, capture_output=True, shell=True)
-    cmd2 = 'top -bn1 | grep \'%Cpu\' | sed \'s/^%Cpu(s)://\''
-    data2 = Run(cmd2, capture_output=True, shell=True)
-    if is_host:
-        cmd3 = 'cat /sys/class/thermal/thermal_zone0/temp | sed \'s/\(.\)..$//\''
-        data3 = Run(cmd3, capture_output=True, shell=True)
-
-    patt = re.compile("[^\s]+")
-    total_ = patt.findall(data.stdout.splitlines()[1].decode('utf-8'))[1]
-    free_ = patt.findall(data.stdout.splitlines()[1].decode('utf-8'))[3]
-    tmp_string = data2.stdout.splitlines()[0].decode('utf-8')
-    tmp_string3 = data3.stdout.splitlines()[0].decode('utf-8')
-    id_ = tmp_string[27:32]
-    si_ = tmp_string[54:59]
-    st_ = tmp_string[63:68]
-    if is_host:
-        wa_ = tmp_string[36:41]
-        hi_ = tmp_string[45:50]
-        temp_ = tmp_string3[0:2]
-    
+            if data["report"][x]['command'] == 'free':
+                for y in range(len(data["commands"])):
+                    if data["commands"][y]['name'] == data["report"][x]['command']:
+                        if not data["commands"][y]['ranit']:
+                            data["commands"][y]['result'] = Run(data["commands"][y]['command'], capture_output=True, shell=True)
+                        data["report"][x]['result'] = parse (data["report"][x]['rx'],data["commands"][y]['result'],data["report"][x]['no1'],data["report"][x]['no2'])
+                        data["commands"][y]['ranit'] = True
+               
     srt = "{"
+    for x in range(len(data["report"])):
+        if data["report"][x]['enabled']:
+            srt = srt + "\""+data["report"][x]['value']+"\":" + data["report"][x]['result']
 
-    # srt = srt + ",\"used\":" + "\"" + used_  + "\""
-    # srt = srt + ",\"us\":" + "\"" + us_  + "\""
-    # srt = srt + ",\"sy\":" + "\"" + sy_  + "\""
-    # srt = srt + ",\"ni\":" + "\"" + ni_  + "\""
-    srt = srt + "\"id\":" + "\"" + id_  + "\""
-    srt = srt + ",\"total\":" + "\"" + total_  + "\""
-    srt = srt + ",\"free\":" + "\"" + free_  + "\""
-    srt = srt + ",\"si\":" + "\"" + si_  + "\""
-    srt = srt + ",\"st\":" + "\"" + st_  + "\""
-    if is_host:
-        srt = srt + ",\"wa\":" + "\"" + wa_  + "\""
-        srt = srt + ",\"hi\":" + "\"" + hi_  + "\""
-        srt = srt + ",\"temp\":" + "\"" + temp_  + "\""
+
+        # if data['report'][x]['value_type'] == "int":
+        #     srt = srt + "\""+data["report"][x]['value']+"\":" + Run(data['report'][x]['command'], capture_output=True, shell=True).stdout.splitlines()[0].decode('utf-8')
+        # if data['report'][x]['value_type'] == "json":
+        #     #srt = srt + "\""+data["report"][x]['value']+"\":" + "\"" + Run(data['report'][x]['command'], capture_output=True, shell=True).stdout.decode('utf-8')  + "\""     
+        #     srt = srt + Run(data['report'][x]['command'], capture_output=True, shell=True).stdout.decode('utf-8') 
+        
+        if x < len(data["report"]):
+            #if data['report'][x]['value_type'] != "just config":
+            srt = srt + ","
     srt = srt + "}"
+
     return srt
+
+
+    # cmd = 'free'
+    # data1 = Run(cmd, capture_output=True, shell=True)
+    # cmd2 = 'top -bn1 | grep \'%Cpu\' | sed \'s/^%Cpu(s)://\''
+    # data2 = Run(cmd2, capture_output=True, shell=True)
+    # cmd3 = 'cat /sys/class/thermal/thermal_zone0/temp | sed \'s/\(.\)..$//\''
+    # data3 = Run(cmd3, capture_output=True, shell=True)
+
+    # patt = re.compile("[^\s]+")
+    # total_ = patt.findall(data1.stdout.splitlines()[1].decode('utf-8'))[1]
+    # free_ = patt.findall(data1.stdout.splitlines()[1].decode('utf-8'))[3]
+    # tmp_string = data2.stdout.splitlines()[0].decode('utf-8')
+    # print(tmp_string)
+    # tmp_string3 = data3.stdout.splitlines()[0].decode('utf-8')
+    # id_ = tmp_string[27:32]
+    # si_ = tmp_string[54:59]
+    # st_ = tmp_string[63:68]
+    # if is_host:
+    #     wa_ = tmp_string[36:41]
+    #     hi_ = tmp_string[45:50]
+    #     temp_ = tmp_string3[0:2]
+    
+    # srt = "{"
+
+    # # srt = srt + ",\"used\":" + "\"" + used_  + "\""
+    # # srt = srt + ",\"us\":" + "\"" + us_  + "\""
+    # # srt = srt + ",\"sy\":" + "\"" + sy_  + "\""
+    # # srt = srt + ",\"ni\":" + "\"" + ni_  + "\""
+    # srt = srt + "\"id\":" + "\"" + id_  + "\""
+    # srt = srt + ",\"total\":" + "\"" + total_  + "\""
+    # srt = srt + ",\"free\":" + "\"" + free_  + "\""
+    # srt = srt + ",\"si\":" + "\"" + si_  + "\""
+    # srt = srt + ",\"st\":" + "\"" + st_  + "\""
+    # if is_host:
+    #     srt = srt + ",\"wa\":" + "\"" + wa_  + "\""
+    #     srt = srt + ",\"hi\":" + "\"" + hi_  + "\""
+    #     srt = srt + ",\"temp\":" + "\"" + temp_  + "\""
+    # srt = srt + "}"
+    # return srt
 
 
 def configure(client):
@@ -113,7 +141,7 @@ def publish(client):
     configure(client)
     
     while True:
-        msg = getMem ()
+        msg = getMem (data)
         result = client.publish(topic_state, msg)
         msg_count += 1
         if msg_count > 60:

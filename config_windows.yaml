@@ -14,9 +14,33 @@ report:
     unit_of_measurement: "%"
     value: "total"
     value_template: "total | int"
+    value_type: int
     command: 'Powershell "[string][int](Get-Counter ''\Processor(*)\% Processor Time'').Countersamples[0].CookedValue"'
   - name: "Percent Memory "
     unit_of_measurement: "%"
     value: "memory"
     value_template: "memory | int"
-    command: 'Powershell Powershell "(104857600 * (Get-Counter ''\Memory\Available MBytes'').CounterSamples.CookedValue /  (Get-CimInstance Win32_PhysicalMemory | Measure-Object -Property capacity -Sum).Sum).ToString(\"#,0.0\")"'
+    value_type: int
+    command: 'Powershell "(104857600 * (Get-Counter ''\Memory\Available MBytes'').CounterSamples.CookedValue /  (Get-CimInstance Win32_PhysicalMemory | Measure-Object -Property capacity -Sum).Sum).ToString(\"#,0.0\")"'
+
+  - name: "Disk C Total"
+    unit_of_measurement: "GB"
+    value: "C_Total"
+    value_template: "C_Total"
+    value_type: json
+    command: 'Powershell "C:\scripts\python\disk.ps1"'
+  - name: "Disk D Total"
+    unit_of_measurement: "GB"
+    value: "D_Total"
+    value_template: "D_Total"
+    value_type: just config
+  - name: "Disk C Free"
+    unit_of_measurement: "GB"
+    value: "C_Free"
+    value_template: "C_Free"
+    value_type: just config
+  - name: "Disk D Free"
+    unit_of_measurement: "GB"
+    value: "D_Free"
+    value_template: "D_Free"
+    value_type: just config

@@ -35,7 +35,7 @@ topic_state = ''.join(["homeassistant/sensor/",sysName,"/state"])
 
 # Set the names and the config queues
 for x in range(len(data["report"])):
-    data["report"][x]['name_'] = data["report"][x]['name'] + sysName
+    data["report"][x]['name_'] = sysName + ' ' + data["report"][x]['name']
     data["report"][x]['topic_'] = data["report"][x]['name_'].lower().replace(" ", "_")
     data["report"][x]['topic_config_'] = ''.join(['homeassistant/sensor/',sysName,'/',data["report"][x]['topic_'],'/config'])
     data["report"][x]['config_'] = ''.join(["{\"name\":\"",data["report"][x]['name_'],"\",\"state_topic\": \"",topic_state,"\",\"unit_of_measurement\":\"",data["report"][x]['unit_of_measurement'],"\",\"value_template\":\"{{value_json.",data["report"][x]['value_template'],"}}\"}"])
@@ -53,12 +53,31 @@ def connect_mqtt():
     return client
 
 def getMem ():
+    just_config = 0
+    for x in range(len(data["report"])):
+        if data['report'][x]['value_type'] != "just config":
+            just_config += 1
     srt = "{"
     for x in range(len(data["report"])):
-        srt = srt + "\""+data["report"][x]['value']+"\":" + "\"" + Run(data['report'][x]['command'], capture_output=True, shell=True).stdout.splitlines()[0].decode('utf-8')  + "\""
-        if x < len(data["report"])-1:
+        if data['report'][x]['value_type'] == "int":
+            srt = srt + "\""+data["report"][x]['value']+"\":" + Run(data['report'][x]['command'], capture_output=True, shell=True).stdout.splitlines()[0].decode('utf-8')
+        if data['report'][x]['value_type'] == "json":
+            #srt = srt + "\""+data["report"][x]['value']+"\":" + "\"" + Run(data['report'][x]['command'], capture_output=True, shell=True).stdout.decode('utf-8')  + "\""     
+            srt = srt + Run(data['report'][x]['command'], capture_output=True, shell=True).stdout.decode('utf-8') 
+        
+        if x < len(data["report"])-(just_config + 1):
+            #if data['report'][x]['value_type'] != "just config":
             srt = srt + ","
     srt = srt + "}"
+
+    return srt
+
+def getDisk ():
+    srt = ""
+    for x in range(len(data["report"])):
+        if data['report'][x]['value_type'] == "json":
+            #srt = srt + "\""+data["report"][x]['value']+"\":" + "\"" + Run(data['report'][x]['command'], capture_output=True, shell=True).stdout.decode('utf-8')  + "\""     
+            srt = srt + Run(data['report'][x]['command'], capture_output=True, shell=True).stdout.decode('utf-8') 
     return srt
 
 def configure(client):
@@ -71,8 +90,8 @@ def publish(client):
     configure(client)
     
     while True:
-        msg = getMem ()
-        result = client.publish(topic_state, msg)
+        result = client.publish(topic_state, getMem ())
+        #result = client.publish(topic_state, getDisk ())
         msg_count += 1
         if msg_count > advertize:
             configure(client)
@@ -82,6 +101,7 @@ def publish(client):
 def just_print():
     while True:
         print(getMem ())
+        #print(getDisk ())
         time.sleep(timing)
 
 def run():
