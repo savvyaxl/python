@@ -6,7 +6,7 @@ After=network-online.target
 [Service]
 Type=simple
 WorkingDirectory=/home/alex/python
-ExecStart=./runme.py
+ExecStart=python ./runme.py
 ExecReload=/bin/kill -HUP $MAINPID
 KillMode=process
 Restart=on-failure
