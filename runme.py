@@ -45,10 +45,10 @@ def connect_mqtt():
             print("Connected to MQTT Broker!")
         else:
             print("Failed to connect, return code %d\n", rc)
-    if my_agent == 'host02':
-        client = mqtt_client.Client(mqtt_client.CallbackAPIVersion.VERSION1,client_id)  #mqtt_client.CallbackAPIVersion.VERSION1,
-    else:
+    if my_agent == 'raspberrypi':
         client = mqtt_client.Client(client_id)  #mqtt_client.CallbackAPIVersion.VERSION1,
+    else:
+        client = mqtt_client.Client(mqtt_client.CallbackAPIVersion.VERSION1,client_id)  #mqtt_client.CallbackAPIVersion.VERSION1,
     client.username_pw_set(username, password)
     client.on_connect = on_connect
     client.connect(broker, port)
