@@ -17,8 +17,9 @@ with open('./config.yaml', 'r') as file:
 
 # Access the YAML data
 #print(data)
-
-my_agent='host'
+my_agent='therest'
+if sysName == 'host02':
+    my_agent='host02'
 timing = data['timing']
 advertize = data['advertize']
 
