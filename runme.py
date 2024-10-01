@@ -9,7 +9,7 @@ import yaml
 from subprocess import run as Run
 from paho.mqtt import client as mqtt_client
 from importlib.metadata import version
-version('paho.mqtt')
+version('mqtt_client')
 sysName = socket.gethostname().split(".")[0]
 
 with open('./config.yaml', 'r') as file:
