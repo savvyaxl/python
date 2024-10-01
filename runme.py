@@ -40,7 +40,6 @@ for x in range(len(data["report"])):
     data["report"][x]['config_'] = ''.join(["{\"name\":\"",data["report"][x]['name_'],"\",\"state_topic\": \"",topic_state,"\",\"unit_of_measurement\":\"",data["report"][x]['unit_of_measurement'],"\",\"value_template\":\"{{",data["report"][x]['value_template'],"}}\"}"])
 
 def connect_mqtt():
-    print(my_agent)
     if sysName == 'raspberrypi':
         def on_connect(client, userdata, flags, rc):
             if rc == 0:
