@@ -8,8 +8,8 @@ import re
 import yaml
 from subprocess import run as Run
 from paho.mqtt import client as mqtt_client
-from importlib.metadata import version
-version('mqtt_client')
+
+
 sysName = socket.gethostname().split(".")[0]
 
 with open('./config.yaml', 'r') as file:
@@ -46,11 +46,11 @@ def connect_mqtt():
             print("Connected to MQTT Broker!")
         else:
             print("Failed to connect, return code %d\n", rc)
-    def on_connect(client, userdata, flags, reason_code, properties):
-        if reason_code == 0:
-            print("Connected to MQTT Broker!")
-        if reason_code > 0:
-            print("Failed to connect, return code %d\n", reason_code)
+    # def on_connect(client, userdata, flags, reason_code, properties):
+    #     if reason_code == 0:
+    #         print("Connected to MQTT Broker!")
+    #     if reason_code > 0:
+    #         print("Failed to connect, return code %s\n", reason_code)
 
     if my_agent == 'raspberrypi':
         client = mqtt_client.Client(client_id)  #mqtt_client.CallbackAPIVersion.VERSION1,
