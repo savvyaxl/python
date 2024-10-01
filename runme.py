@@ -41,7 +41,7 @@ for x in range(len(data["report"])):
 
 def connect_mqtt():
     print(my_agent)
-    if my_agent == 'raspberrypi':
+    if sysName == 'raspberrypi':
         def on_connect(client, userdata, flags, rc):
             if rc == 0:
                 print("Connected to MQTT Broker!")
