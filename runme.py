@@ -40,20 +40,20 @@ for x in range(len(data["report"])):
     data["report"][x]['config_'] = ''.join(["{\"name\":\"",data["report"][x]['name_'],"\",\"state_topic\": \"",topic_state,"\",\"unit_of_measurement\":\"",data["report"][x]['unit_of_measurement'],"\",\"value_template\":\"{{",data["report"][x]['value_template'],"}}\"}"])
 
 def connect_mqtt():
-    # def on_connect(client, userdata, flags, rc):
-    #     if rc == 0:
-    #         print("Connected to MQTT Broker!")
-    #     else:
-    #         print("Failed to connect, return code %d\n", rc)
-    def on_connect(client, userdata, flags, reason_code, properties):
-        if reason_code == 0:
-            print("Connected to MQTT Broker!")
-        if reason_code > 0:
-            print("Failed to connect, return code %s\n", reason_code)
 
     if my_agent == 'raspberrypi':
+        def on_connect(client, userdata, flags, rc):
+            if rc == 0:
+                print("Connected to MQTT Broker!")
+            else:
+                print("Failed to connect, return code %d\n", rc)
         client = mqtt_client.Client(client_id)  #mqtt_client.CallbackAPIVersion.VERSION1,
     else:
+        def on_connect(client, userdata, flags, reason_code, properties):
+            if reason_code == 0:
+                print("Connected to MQTT Broker!")
+            if reason_code > 0:
+                print("Failed to connect, return code %s\n", reason_code)
         client = mqtt_client.Client(mqtt_client.CallbackAPIVersion.VERSION2,client_id)  #mqtt_client.CallbackAPIVersion.VERSION1,
     client.username_pw_set(username, password)
     client.on_connect = on_connect
