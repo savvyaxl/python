@@ -76,21 +76,21 @@ def getMem (data):
                     if not data["commands"][y]['ranit']:
                         data["commands"][y]['result'] = Run(data["commands"][y]['command'], capture_output=True, shell=True)
                     data["report"][x]['result'] = parse_free (data["report"][x]['rx'],data["commands"][y]['result'],data["report"][x]['splitlines_'])
-                    data["commands"][y]['ranit'] = True
+                    # data["commands"][y]['ranit'] = True
         if data["report"][x]['command'] == 'top':
             for y in range(len(data["commands"])):
                 if data["commands"][y]['name'] == data["report"][x]['command']:
                     if not data["commands"][y]['ranit']:
                         data["commands"][y]['result'] = Run(data["commands"][y]['command'], capture_output=True, shell=True)
                     data["report"][x]['result'] = parse_top (data["commands"][y]['result'],data["report"][x]['splitlines_'])
-                    data["commands"][y]['ranit'] = True        
+                    # data["commands"][y]['ranit'] = True        
         if data["report"][x]['command'] == 'temp':
             for y in range(len(data["commands"])):
                 if data["commands"][y]['name'] == data["report"][x]['command']:
                     if not data["commands"][y]['ranit']:
                         data["commands"][y]['result'] = Run(data["commands"][y]['command'], capture_output=True, shell=True)
                     data["report"][x]['result'] = parse_temp (data["commands"][y]['result'])
-                    data["commands"][y]['ranit'] = True        
+                    # data["commands"][y]['ranit'] = True        
 
     srt = "{"
     for x in range(len(data["report"])):
@@ -112,6 +112,7 @@ def publish(client):
     
     while True:
         msg = getMem (data)
+        print(msg)
         result = client.publish(topic_state, msg)
         msg_count += 1
         if msg_count > advertize:

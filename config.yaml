@@ -122,10 +122,3 @@ report:
       - 68
 
 
-  - name: "Temp"
-    unit_of_measurement: "%"
-    value: "temp"
-    value_template: "value_json.temp | int"
-    command: 'temp'
-    enabled: False
-
